@@ -15,7 +15,7 @@ namespace HonccaFest
 
         public static SpriteFont DebugFont;
 
-        private const bool debug = true;
+        private const bool debug = false;
 
         private Creator mapCreator;
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Dator/source/repos/HonccaFest/HonccaFest/Content/Sprites/outlineRectangle.png</SourceFile>
+  <SourceFile>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/outlineRectangle.png</SourceFile>
   <SourceTime>2020-11-06T16:17:35.369092+01:00</SourceTime>
-  <DestFile>C:/Users/Dator/source/repos/HonccaFest/HonccaFest/Content/bin/DesktopGL/Content/Sprites/outlineRectangle.xnb</DestFile>
-  <DestTime>2020-11-06T16:19:12.8400457+01:00</DestTime>
+  <DestFile>F:/Github/honcca-fest-party-royale/HonccaFest/Content/bin/DesktopGL/Content/Sprites/outlineRectangle.xnb</DestFile>
+  <DestTime>2020-11-06T18:30:13.469577+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
