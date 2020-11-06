@@ -1,4 +1,2 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"D:/Github/honcca-fest-party-royale/HonccaFest/Content/Fonts/debugFont.spritefont","D:/Github/honcca-fest-party-royale/HonccaFest/Content/bin/DesktopGL/Fonts/debugFont.xnb","FontDescriptionProcessor","SpriteFontContent",2068,21521,0,3019985
-"D:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/outlineRectangle.png","D:/Github/honcca-fest-party-royale/HonccaFest/Content/bin/DesktopGL/Sprites/outlineRectangle.xnb","TextureProcessor","Texture2DContent",166,4181,0,0260014
-"D:/Github/honcca-fest-party-royale/HonccaFest/Content/Tiles/tileSet.png","D:/Github/honcca-fest-party-royale/HonccaFest/Content/bin/DesktopGL/Tiles/tileSet.xnb","TextureProcessor","Texture2DContent",172482,1433685,0,0309997
+"C:/Users/Dator/source/repos/HonccaFest/HonccaFest/Content/Fonts/debugFont.spritefont","C:/Users/Dator/source/repos/HonccaFest/HonccaFest/Content/bin/DesktopGL/Fonts/debugFont.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21521,0,3859686
