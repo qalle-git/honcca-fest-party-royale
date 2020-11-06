@@ -1,11 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HonccaFest.Files;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace HonccaFest.MapCreator
 {
@@ -22,6 +21,17 @@ namespace HonccaFest.MapCreator
         public Creator()
         {
             currentMap = new Vector2[40, 23];
+
+            List<int> levelOne = FileHandler.GetFile("Level1");
+
+            for (int currentX = 0; currentX < currentMap.GetLength(0); currentX++)
+                for (int currentY = 0; currentY < currentMap.GetLength(1); currentY++)
+                {
+                    int tileX = (currentX * 46) + (currentY * 2);
+                    int tileY = (currentX * 46) + (currentY * 2) + 1;
+
+                    currentMap[currentX, currentY] = new Vector2(levelOne[tileX], levelOne[tileY]);
+                }
         }
 
         public void Update(GameTime gameTime)
@@ -119,7 +129,18 @@ namespace HonccaFest.MapCreator
 
         private void SaveMap()
         {
-            Console.WriteLine("Some kind of saving into file?");
+            List<int> saveList = new List<int>();
+
+            for (int currentX = 0; currentX < currentMap.GetLength(0); currentX++)
+                for (int currentY = 0; currentY < currentMap.GetLength(1); currentY++)
+                {
+                    saveList.Add((int)currentMap[currentX, currentY].X);
+                    saveList.Add((int)currentMap[currentX, currentY].Y);
+                }
+
+            FileHandler.AddFile("Level1", saveList);
+
+            Console.WriteLine($"Saving Map: Level1");
         }
 
         private void AddToMap()
