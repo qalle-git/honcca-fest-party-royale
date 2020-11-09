@@ -1,4 +1,5 @@
 ﻿using HonccaFest.Files;
+using HonccaFest.MainClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -20,7 +21,7 @@ namespace HonccaFest.MapCreator
 
         public Creator()
         {
-            currentMap = new Vector2[Main.GameSize.X, Main.GameSize.Y];
+            currentMap = new Vector2[Globals.GameSize.X, Globals.GameSize.Y];
 
             LoadMap(mapName);
         }
@@ -161,15 +162,15 @@ namespace HonccaFest.MapCreator
 
         private void HandleMovement(GameTime gameTime)
         {
-            Vector2 newPosition = new Vector2(currentPosition.X * Main.TileSize.X, currentPosition.Y * Main.TileSize.Y);
+            Vector2 newPosition = new Vector2(currentPosition.X * Globals.TileSize.X, currentPosition.Y * Globals.TileSize.Y);
 
             if (currentPixelPosition != newPosition)
-                currentPixelPosition = new Vector2(currentPosition.X * Main.TileSize.X, currentPosition.Y * Main.TileSize.Y);
+                currentPixelPosition = new Vector2(currentPosition.X * Globals.TileSize.X, currentPosition.Y * Globals.TileSize.Y);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Rectangle tileRectangle = new Rectangle((int)currentTile.X * Main.TileSize.X, (int)currentTile.Y * Main.TileSize.Y, Main.TileSize.X, Main.TileSize.Y);
+            Rectangle tileRectangle = new Rectangle((int)currentTile.X * Globals.TileSize.X, (int)currentTile.Y * Globals.TileSize.Y, Globals.TileSize.X, Globals.TileSize.Y);
 
             for (int currentX = 0; currentX < currentMap.GetLength(0); currentX++)
             {
@@ -178,14 +179,14 @@ namespace HonccaFest.MapCreator
                     Vector2 drawTile = currentMap[currentX, currentY];
 
                     if (drawTile.Y > 0 || drawTile.X > 0)
-                        spriteBatch.Draw(Main.TileSet, new Rectangle((int)currentX * Main.TileSize.X, (int)currentY * Main.TileSize.Y, Main.TileSize.X, Main.TileSize.Y), new Rectangle((int)drawTile.X * Main.TileSize.X, (int)drawTile.Y * Main.TileSize.Y, Main.TileSize.X, Main.TileSize.Y), Color.White);
+                        spriteBatch.Draw(Main.TileSet, new Rectangle((int)currentX * Globals.TileSize.X, (int)currentY * Globals.TileSize.Y, Globals.TileSize.X, Globals.TileSize.Y), new Rectangle((int)drawTile.X * Globals.TileSize.X, (int)drawTile.Y * Globals.TileSize.Y, Globals.TileSize.X, Globals.TileSize.Y), Color.White);
                 }
             }
 
             if (currentTile.Y > 0 || currentTile.X > 0)
-                spriteBatch.Draw(Main.TileSet, new Rectangle((int)currentPixelPosition.X, (int)currentPixelPosition.Y, Main.TileSize.X, Main.TileSize.Y), tileRectangle, Color.White);
+                spriteBatch.Draw(Main.TileSet, new Rectangle((int)currentPixelPosition.X, (int)currentPixelPosition.Y, Globals.TileSize.X, Globals.TileSize.Y), tileRectangle, Color.White);
 
-            spriteBatch.Draw(Main.OutlineRectangle, new Rectangle((int)currentPixelPosition.X, (int)currentPixelPosition.Y, Main.TileSize.X, Main.TileSize.Y), Color.White);
+            spriteBatch.Draw(Main.OutlineRectangle, new Rectangle((int)currentPixelPosition.X, (int)currentPixelPosition.Y, Globals.TileSize.X, Globals.TileSize.Y), Color.White);
 
             spriteBatch.DrawString(Main.DebugFont, $"X: {currentPosition.X}\nY: {currentPosition.Y}", new Vector2(0, 0), Color.White);
             spriteBatch.DrawString(Main.DebugFont, $"TileX: {currentTile.X}\nTileY: {currentTile.Y}", new Vector2(0, 40), Color.White);

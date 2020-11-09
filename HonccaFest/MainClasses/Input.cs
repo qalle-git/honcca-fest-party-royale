@@ -17,35 +17,37 @@ namespace HonccaFest.MainClasses
             IJKL
         }
 
-        public static Dictionary<KeySet, Keys[]> MovementKeys = new Dictionary<KeySet, Keys[]>()
+        public static Dictionary<KeySet, Keys[]> ActionKeys = new Dictionary<KeySet, Keys[]>()
         {
             {
-                KeySet.WASD, new Keys[4]
+                KeySet.WASD, new Keys[5]
                 {
                     Keys.W,
                     Keys.A,
                     Keys.S,
-                    Keys.D
+                    Keys.D,
+                    Keys.Space
                 }
             },
             {
-                KeySet.ARROWS, new Keys[4]
+                KeySet.ARROWS, new Keys[5]
                 {
                     Keys.Up,
                     Keys.Left,
                     Keys.Down,
-                    Keys.Right
+                    Keys.Right,
+                    Keys.Enter
                 }
             },
-            {
-                KeySet.IJKL, new Keys[4]
-                {
-                    Keys.I,
-                    Keys.J,
-                    Keys.K,
-                    Keys.L
-                }
-            }
+            //{
+            //    KeySet.IJKL, new Keys[5]
+            //    {
+            //        Keys.I,
+            //        Keys.J,
+            //        Keys.K,
+            //        Keys.L
+            //    }
+            //}
         };
 
         public static Keys[] GetPressedKeys()

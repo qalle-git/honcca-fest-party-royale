@@ -21,11 +21,11 @@ namespace HonccaFest.MainClasses
         {
             get
             {
-                if (CurrentPosition.X > Main.GameSize.X)
+                if (CurrentPosition.X > Globals.GameSize.X)
                     return true;
                 else if (CurrentPosition.X < 0)
                     return true;
-                else if (CurrentPosition.Y > Main.GameSize.Y)
+                else if (CurrentPosition.Y > Globals.GameSize.Y)
                     return true;
                 else if (CurrentPosition.Y < 0)
                     return true;
@@ -41,23 +41,23 @@ namespace HonccaFest.MainClasses
             Texture = texture;
 
             CurrentPosition = position;
-            CurrentPixelPosition = new Vector2(CurrentPosition.X * Main.TileSize.X, CurrentPosition.Y * Main.TileSize.Y);
+            CurrentPixelPosition = new Vector2(CurrentPosition.X * Globals.TileSize.X, CurrentPosition.Y * Globals.TileSize.Y);
         }
 
         public virtual void Update(GameTime gameTime)
         {
             if (ChangingTile)
             {
-                if (CurrentPixelPosition.X < CurrentPosition.X * Main.TileSize.X)
+                if (CurrentPixelPosition.X < CurrentPosition.X * Globals.TileSize.X)
                     CurrentPixelPosition.X += pixelPerMove;
-                if (CurrentPixelPosition.Y < CurrentPosition.Y * Main.TileSize.Y)
+                if (CurrentPixelPosition.Y < CurrentPosition.Y * Globals.TileSize.Y)
                     CurrentPixelPosition.Y += pixelPerMove;
-                if (CurrentPixelPosition.X > CurrentPosition.X * Main.TileSize.X)
+                if (CurrentPixelPosition.X > CurrentPosition.X * Globals.TileSize.X)
                     CurrentPixelPosition.X -= pixelPerMove;
-                if (CurrentPixelPosition.Y > CurrentPosition.Y * Main.TileSize.Y)
+                if (CurrentPixelPosition.Y > CurrentPosition.Y * Globals.TileSize.Y)
                     CurrentPixelPosition.Y -= pixelPerMove;
 
-                if (CurrentPixelPosition == new Vector2(CurrentPosition.X * Main.TileSize.X, CurrentPosition.Y * Main.TileSize.Y))
+                if (CurrentPixelPosition == new Vector2(CurrentPosition.X * Globals.TileSize.X, CurrentPosition.Y * Globals.TileSize.Y))
                 {
                     ChangingTile = false;
 
@@ -68,7 +68,7 @@ namespace HonccaFest.MainClasses
 
         public virtual void Draw(SpriteBatch sb)
         {
-            Rectangle drawRectangle = new Rectangle((int)CurrentPixelPosition.X, (int)CurrentPixelPosition.Y, Main.TileSize.X, Main.TileSize.Y);
+            Rectangle drawRectangle = new Rectangle((int)CurrentPixelPosition.X, (int)CurrentPixelPosition.Y, Globals.TileSize.X, Globals.TileSize.Y);
 
             sb.Draw(Texture, drawRectangle, Color.White);
         }
@@ -91,7 +91,7 @@ namespace HonccaFest.MainClasses
         public virtual void ForceMove(Vector2 _newPosition)
         {
             CurrentPosition = _newPosition;
-            CurrentPixelPosition = new Vector2(_newPosition.X * Main.TileSize.X, _newPosition.Y * Main.TileSize.Y);
+            CurrentPixelPosition = new Vector2(_newPosition.X * Globals.TileSize.X, _newPosition.Y * Globals.TileSize.Y);
         }
     }
 }

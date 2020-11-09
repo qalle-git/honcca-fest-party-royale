@@ -14,8 +14,6 @@ namespace HonccaFest
         private GraphicsDeviceManager graphicsManager;
         private SpriteBatch spriteBatch;
 
-        public static Random RandomGenerator = new Random();
-
         public static Texture2D TileSet;
         public static Texture2D OutlineRectangle;
 
@@ -25,10 +23,7 @@ namespace HonccaFest
 
         public static SpriteFont DebugFont;
 
-        public static Point TileSize = new Point(32, 32);
-        public static Point GameSize = new Point(40, 23);
-
-        public static int TotalPlayers = 3;
+        public int TotalPlayers = 2;
 
         private const bool debug = false;
 

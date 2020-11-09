@@ -51,6 +51,7 @@
     <Compile Include="MainClasses\Animation.cs" />
     <Compile Include="MainClasses\GameObject.cs" />
     <Compile Include="MainClasses\GameState.cs" />
+    <Compile Include="MainClasses\Globals.cs" />
     <Compile Include="MainClasses\Input.cs" />
     <Compile Include="MainClasses\Main.cs" />
     <Compile Include="MapCreator\Creator.cs" />

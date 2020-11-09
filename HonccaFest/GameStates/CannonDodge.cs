@@ -31,7 +31,7 @@ namespace HonccaFest.GameStates
         {
             if (gameTime.TotalGameTime > fireballSpawnCooldown + lastFireballSpawn)
             {
-                Vector2 randomSpawn = new Vector2(Main.RandomGenerator.Next(0, Map.GetLength(0)), 0);
+                Vector2 randomSpawn = new Vector2(Globals.RandomGenerator.Next(0, Map.GetLength(0)), 0);
 
                 Animation fireballObject = new Animation(Main.FireballSprite, randomSpawn);
 

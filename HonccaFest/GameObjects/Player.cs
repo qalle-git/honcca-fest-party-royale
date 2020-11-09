@@ -22,10 +22,10 @@ namespace HonccaFest
 
         public override void Update(GameTime gameTime)
         {
-            if (!MovementKeys.ContainsKey(movementSet))
+            if (!ActionKeys.ContainsKey(movementSet))
                 return;
 
-            Keys[] movementKeys = MovementKeys[movementSet];
+            Keys[] movementKeys = ActionKeys[movementSet];
 
             for (int currentKeyIndex = 0; currentKeyIndex < movementKeys.Length; currentKeyIndex++)
             {
@@ -70,16 +70,31 @@ namespace HonccaFest
 
         public override void Move(GameTime gameTime, Vector2 _newPosition)
         {
-            if (_newPosition.X >= Main.GameSize.X)
+            if (_newPosition.X >= Globals.GameSize.X)
                 return;
             else if (_newPosition.X < 0)
                 return;
-            else if (_newPosition.Y >= Main.GameSize.Y)
+            else if (_newPosition.Y >= Globals.GameSize.Y)
                 return;
             else if (_newPosition.Y < 0)
                 return;
 
             base.Move(gameTime, _newPosition);
+        }
+
+        public bool IsUsingActionKey(int keyIndex)
+        {
+            Keys[] movementKeys = ActionKeys[movementSet];
+
+            if (movementKeys.Length < keyIndex)
+                return false;
+
+            Keys currentKey = movementKeys[keyIndex];
+
+            if (Keyboard.GetState().IsKeyDown(currentKey))
+                return true;
+
+            return false;
         }
     }
 }

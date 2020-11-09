@@ -75,8 +75,8 @@ namespace HonccaFest.MainClasses
 
         public override void Draw(SpriteBatch sb)
         {
-            Rectangle drawRectangle = new Rectangle((int)CurrentPixelPosition.X, (int)CurrentPixelPosition.Y, Main.TileSize.X, Main.TileSize.Y);
-            Rectangle sourceRectangle = new Rectangle(CurrentFrame.X * Main.TileSize.X, CurrentFrame.Y * Main.TileSize.Y, Main.TileSize.X, Main.TileSize.Y);
+            Rectangle drawRectangle = new Rectangle((int)CurrentPixelPosition.X, (int)CurrentPixelPosition.Y, Globals.TileSize.X, Globals.TileSize.Y);
+            Rectangle sourceRectangle = new Rectangle(CurrentFrame.X * Globals.TileSize.X, CurrentFrame.Y * Globals.TileSize.Y, Globals.TileSize.X, Globals.TileSize.Y);
 
             sb.Draw(Texture, drawRectangle, sourceRectangle, Color.White, 0f, Vector2.Zero, CurrentDirection == Direction.LEFT ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 0f);
         }
