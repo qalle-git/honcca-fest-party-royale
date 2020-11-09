@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HonccaFest.MainClasses
 {
-    class GameObject
+    public class GameObject
     {
         public Texture2D Texture;
 
@@ -16,7 +16,6 @@ namespace HonccaFest.MainClasses
         public Vector2 CurrentPixelPosition;
 
         public bool ChangingTile;
-
 
         private float pixelPerMove = 2;
         public float PixelPerMove

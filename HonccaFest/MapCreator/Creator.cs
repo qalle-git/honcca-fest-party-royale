@@ -17,7 +17,7 @@ namespace HonccaFest.MapCreator
         private Vector2 currentPosition;
         private Vector2 currentPixelPosition;
 
-        private const string mapName = "Quackory";
+        private const string mapName = "MainMenu";
 
         public Creator()
         {

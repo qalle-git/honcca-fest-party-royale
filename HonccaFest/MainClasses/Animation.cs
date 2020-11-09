@@ -4,7 +4,7 @@ using System;
 
 namespace HonccaFest.MainClasses
 {
-    class Animation : GameObject
+    public class Animation : GameObject
     {
         public float AnimationSpeed;
 

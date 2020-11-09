@@ -1,4 +1,5 @@
 ﻿using HonccaFest.MainClasses;
+using HonccaFest.Sound;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -21,10 +22,16 @@ namespace HonccaFest.GameStates
         public override void Initialize(ref Player[] players)
         {
             for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
-                players[currentPlayerIndex].CurrentPosition = new Vector2(currentPlayerIndex * (players.Length), 18);
+            {
+                Player currentPlayer = players[currentPlayerIndex];
+
+                currentPlayer.ForceMove(new Vector2(currentPlayerIndex * (players.Length), 18));
+
+                currentPlayer.MovementEnabled = true;
+            }
         }
 
-        private TimeSpan fireballSpawnCooldown = TimeSpan.FromMilliseconds(1500);
+        private TimeSpan fireballSpawnCooldown = TimeSpan.FromMilliseconds(5000);
         private TimeSpan lastFireballSpawn = TimeSpan.Zero;
 
         public override void Update(GameTime gameTime, Player[] players)
@@ -39,6 +46,8 @@ namespace HonccaFest.GameStates
 
                 fireballObject.CurrentFrame.Y = 6;
 
+                fireballObject.PixelPerMove = 8;
+                
                 fireballObjects.Add(fireballObject);
 
                 lastFireballSpawn = gameTime.TotalGameTime;

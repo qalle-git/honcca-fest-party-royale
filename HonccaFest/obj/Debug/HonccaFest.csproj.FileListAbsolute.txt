@@ -43,3 +43,5 @@ F:\Github\honcca-fest-party-royale\HonccaFest\obj\Debug\HonccaFest.pdb
 F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\SpriteSheets\playerOneCharacter.xnb
 F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\SpriteSheets\playerSpritesheet.xnb
 F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\SpriteSheets\fireballSpritesheet.xnb
+F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Fonts\mainFont.xnb
+F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Sounds\quack_sound.xnb

@@ -1,6 +1,7 @@
 ﻿using HonccaFest.GameStates;
 using HonccaFest.MainClasses;
 using HonccaFest.MapCreator;
+using HonccaFest.Sound;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,6 +12,8 @@ namespace HonccaFest
 {
     public class Main : Game
     {
+        public static Main Instance;
+
         private GraphicsDeviceManager graphicsManager;
         private SpriteBatch spriteBatch;
 
@@ -21,11 +24,14 @@ namespace HonccaFest
 
         public static Texture2D FireballSprite;
 
+        public static SpriteFont MainFont;
         public static SpriteFont DebugFont;
+
+        public static AudioHandler SoundHandler;
 
         public int TotalPlayers = 2;
 
-        private const bool debug = false;
+        public const bool MapCreator = false;
 
         private Creator mapCreator;
 
@@ -37,8 +43,8 @@ namespace HonccaFest
         {
             graphicsManager = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = 1280,
-                PreferredBackBufferHeight = 720
+                PreferredBackBufferWidth = Globals.ScreenSize.X,
+                PreferredBackBufferHeight = Globals.ScreenSize.Y
             };
 
             IsMouseVisible = true;
@@ -54,7 +60,11 @@ namespace HonccaFest
         {
             base.Initialize();
 
-            if (debug)
+            Instance = this;
+
+            SoundHandler = new AudioHandler();
+
+            if (MapCreator)
                 mapCreator = new Creator();
         }
 
@@ -68,7 +78,9 @@ namespace HonccaFest
             PlayerOneSprite = Content.Load<Texture2D>("SpriteSheets/playerSpritesheet");
             FireballSprite = Content.Load<Texture2D>("SpriteSheets/fireballSpritesheet");
 
-            if (debug)
+            MainFont = Content.Load<SpriteFont>("Fonts/mainFont");
+
+            if (MapCreator)
                 DebugFont = Content.Load<SpriteFont>("Fonts/debugFont");
             else
             {
@@ -83,7 +95,7 @@ namespace HonccaFest
                     players[currentPlayerIndex] = playerObject;
                 }
 
-                currentGameState = new CannonDodge();
+                currentGameState = new MainMenu();
 
                 currentGameState.Initialize(ref players);
             }
@@ -94,7 +106,7 @@ namespace HonccaFest
             if (IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (debug)
+            if (MapCreator)
                 mapCreator.Update(gameTime);
             else
             {
@@ -113,7 +125,7 @@ namespace HonccaFest
 
             spriteBatch.Begin();
 
-            if (debug)
+            if (MapCreator)
                 mapCreator.Draw(spriteBatch);
             else
             {
@@ -128,7 +140,7 @@ namespace HonccaFest
             base.Draw(gameTime);
         }
 
-        private void ChangeGameState(GameState _newGameState)
+        public void ChangeGameState(GameState _newGameState)
         {
             currentGameState = _newGameState;
 

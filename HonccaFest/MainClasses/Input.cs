@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HonccaFest.MainClasses
 {
-    class Input
+    public class Input
     {
 
         public enum KeySet

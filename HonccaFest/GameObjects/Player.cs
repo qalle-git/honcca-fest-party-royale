@@ -1,4 +1,5 @@
 ﻿using HonccaFest.MainClasses;
+using HonccaFest.Sound;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,25 +12,28 @@ using static HonccaFest.MainClasses.Input;
 
 namespace HonccaFest
 {
-    class Player : Animation
+    public class Player : Animation
     {
-        private readonly KeySet movementSet;
+        public readonly KeySet MovementSet;
 
         public bool MovementEnabled = true;
 
         public Player(Texture2D texture, Vector2 position, KeySet _movementSet) : base(texture, position)
         {
-            movementSet = _movementSet;
+            MovementSet = _movementSet;
         }
+
+        private TimeSpan honkCooldown = TimeSpan.FromMilliseconds(1000);
+        private TimeSpan lastHonk = TimeSpan.Zero;
 
         public override void Update(GameTime gameTime)
         {
             if (MovementEnabled)
             {
-                if (!ActionKeys.ContainsKey(movementSet))
+                if (!ActionKeys.ContainsKey(MovementSet))
                     return;
 
-                Keys[] movementKeys = ActionKeys[movementSet];
+                Keys[] movementKeys = ActionKeys[MovementSet];
 
                 for (int currentKeyIndex = 0; currentKeyIndex < movementKeys.Length; currentKeyIndex++)
                 {
@@ -63,6 +67,17 @@ namespace HonccaFest
                                 Move(gameTime, new Vector2(CurrentPosition.X + 1, CurrentPosition.Y));
 
                                 break;
+                            case 4:
+                                if (gameTime.TotalGameTime > lastHonk + honkCooldown)
+                                {
+                                    AudioEffect sound = new AudioEffect("quack_sound");
+
+                                    sound.Play(0.1f, CurrentPixelPosition);
+
+                                    lastHonk = gameTime.TotalGameTime;
+                                }
+
+                                break;
                             default:
                                 break;
                         }
@@ -89,7 +104,7 @@ namespace HonccaFest
 
         public bool IsUsingActionKey(int keyIndex)
         {
-            Keys[] movementKeys = ActionKeys[movementSet];
+            Keys[] movementKeys = ActionKeys[MovementSet];
 
             if (movementKeys.Length < keyIndex)
                 return false;

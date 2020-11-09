@@ -47,6 +47,8 @@
   <ItemGroup>
     <Compile Include="Files\FileHandler.cs" />
     <Compile Include="GameStates\CannonDodge.cs" />
+    <Compile Include="GameStates\DuckTag.cs" />
+    <Compile Include="GameStates\MainMenu.cs" />
     <Compile Include="GameStates\Quackory.cs" />
     <Compile Include="MainClasses\Animation.cs" />
     <Compile Include="MainClasses\GameObject.cs" />
@@ -58,6 +60,8 @@
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sound\AudioEffect.cs" />
+    <Compile Include="Sound\AudioHandler.cs" />
     <Compile Include="Tiles\Tile.cs" />
   </ItemGroup>
   <ItemGroup>

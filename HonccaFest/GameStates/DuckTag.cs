@@ -13,9 +13,14 @@ namespace HonccaFest.GameStates
     {
         private int isTagger;
 
+        // Constant values that can't be set to 'const'
         private int tagDistance = Globals.TileSize.X * 2;
         private TimeSpan tagCooldown = TimeSpan.FromMilliseconds(2000);
+
         private TimeSpan lastTagged = TimeSpan.Zero;
+        private TimeSpan totalGameDuration = TimeSpan.FromMinutes(1);
+        private TimeSpan currentGameDuration = TimeSpan.Zero;
+        private TimeSpan[] playerTaggerTime;
 
         public DuckTag() : base("DuckTag")
         {
@@ -28,24 +33,41 @@ namespace HonccaFest.GameStates
 
             int randomPlayerIndex = Globals.RandomGenerator.Next(0, players.Length);
             isTagger = randomPlayerIndex;
+
+            playerTaggerTime = new TimeSpan[players.Length];
         }
 
         public override void Update(GameTime gameTime, Player[] players)
         {
-            Player tagger = players[isTagger];
+            currentGameDuration = gameTime.TotalGameTime;
 
-            if (tagger.IsUsingActionKey(4) && gameTime.TotalGameTime > lastTagged + tagCooldown)
+            if (currentGameDuration < totalGameDuration)
             {
-                for (int playerIndex = 0; playerIndex < players.Length; playerIndex++)
-                {
-                    if (Vector2.Distance(tagger.CurrentPixelPosition, players[playerIndex].CurrentPixelPosition) < tagDistance && playerIndex != isTagger)
-                    {
-                        isTagger = playerIndex;
-                        lastTagged = gameTime.TotalGameTime;
+                Player tagger = players[isTagger];
 
-                        break;
+                if (!tagger.ChangingTile)
+                    tagger.PixelPerMove = 4;
+
+                playerTaggerTime[isTagger] += gameTime.ElapsedGameTime;
+
+                if (tagger.IsUsingActionKey(4) && gameTime.TotalGameTime > lastTagged + tagCooldown)
+                {
+                    for (int playerIndex = 0; playerIndex < players.Length; playerIndex++)
+                    {
+                        if (Vector2.Distance(tagger.CurrentPixelPosition, players[playerIndex].CurrentPixelPosition) < tagDistance && playerIndex != isTagger)
+                        {
+                            tagger.PixelPerMove = 2;
+                            isTagger = playerIndex;
+                            lastTagged = gameTime.TotalGameTime;
+
+                            break;
+                        }
                     }
                 }
+            }
+            else
+            {
+                // play endscreen
             }
         }
 

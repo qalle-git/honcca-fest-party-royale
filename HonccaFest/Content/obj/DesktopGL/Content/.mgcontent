@@ -5,6 +5,8 @@
   <Config />
   <SourceFiles>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Fonts/debugFont.spritefont</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Fonts/mainFont.spritefont</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sounds/quack_sound.wav</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/outlineRectangle.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/fireballSprite.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/playerOneCharacter.png</File>
@@ -12,6 +14,8 @@
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Tiles/tileSet.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File>SpriteSheets/fireballSpritesheet.png</File>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HonccaFest.MainClasses
 {
-    abstract class GameState
+    public abstract class GameState
     {
         public Vector2[,] Map;
 
