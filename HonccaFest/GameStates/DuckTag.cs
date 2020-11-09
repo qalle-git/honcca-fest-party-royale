@@ -13,14 +13,12 @@ namespace HonccaFest.GameStates
     {
         private int isTagger;
 
-        // Constant values
         private int tagDistance = Globals.TileSize.X * 2;
         private TimeSpan tagCooldown = TimeSpan.FromMilliseconds(2000);
         private TimeSpan lastTagged = TimeSpan.Zero;
 
         public DuckTag() : base("DuckTag")
         {
-
         }
 
         public override void Initialize(ref Player[] players)
@@ -36,11 +34,17 @@ namespace HonccaFest.GameStates
         {
             Player tagger = players[isTagger];
 
-            for (int playerIndex = 0; playerIndex < players.Length; playerIndex++)
+            if (tagger.IsUsingActionKey(4) && gameTime.TotalGameTime > lastTagged + tagCooldown)
             {
-                if (Vector2.Distance(tagger.CurrentPixelPosition, players[playerIndex].CurrentPixelPosition) < tagDistance && )
+                for (int playerIndex = 0; playerIndex < players.Length; playerIndex++)
                 {
-                    isTagger = playerIndex;
+                    if (Vector2.Distance(tagger.CurrentPixelPosition, players[playerIndex].CurrentPixelPosition) < tagDistance && playerIndex != isTagger)
+                    {
+                        isTagger = playerIndex;
+                        lastTagged = gameTime.TotalGameTime;
+
+                        break;
+                    }
                 }
             }
         }

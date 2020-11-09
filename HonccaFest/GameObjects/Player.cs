@@ -13,7 +13,9 @@ namespace HonccaFest
 {
     class Player : Animation
     {
-        private KeySet movementSet;
+        private readonly KeySet movementSet;
+
+        public bool MovementEnabled = true;
 
         public Player(Texture2D texture, Vector2 position, KeySet _movementSet) : base(texture, position)
         {
@@ -22,50 +24,53 @@ namespace HonccaFest
 
         public override void Update(GameTime gameTime)
         {
-            if (!ActionKeys.ContainsKey(movementSet))
-                return;
-
-            Keys[] movementKeys = ActionKeys[movementSet];
-
-            for (int currentKeyIndex = 0; currentKeyIndex < movementKeys.Length; currentKeyIndex++)
+            if (MovementEnabled)
             {
-                Keys currentKey = movementKeys[currentKeyIndex];
+                if (!ActionKeys.ContainsKey(movementSet))
+                    return;
 
-                if (Keyboard.GetState().IsKeyDown(currentKey))
+                Keys[] movementKeys = ActionKeys[movementSet];
+
+                for (int currentKeyIndex = 0; currentKeyIndex < movementKeys.Length; currentKeyIndex++)
                 {
-                    switch (currentKeyIndex)
+                    Keys currentKey = movementKeys[currentKeyIndex];
+
+                    if (IsKeyDown(currentKey))
                     {
-                        case 0:
-                            CurrentFrame.Y = 3;
+                        switch (currentKeyIndex)
+                        {
+                            case 0:
+                                CurrentFrame.Y = 3;
 
-                            Move(gameTime, new Vector2(CurrentPosition.X, CurrentPosition.Y - 1));
+                                Move(gameTime, new Vector2(CurrentPosition.X, CurrentPosition.Y - 1));
 
-                            break;
-                        case 1:
-                            CurrentFrame.Y = 1;
+                                break;
+                            case 1:
+                                CurrentFrame.Y = 1;
 
-                            Move(gameTime, new Vector2(CurrentPosition.X - 1, CurrentPosition.Y));
+                                Move(gameTime, new Vector2(CurrentPosition.X - 1, CurrentPosition.Y));
 
-                            break;
-                        case 2:
-                            CurrentFrame.Y = 0;
+                                break;
+                            case 2:
+                                CurrentFrame.Y = 0;
 
-                            Move(gameTime, new Vector2(CurrentPosition.X, CurrentPosition.Y + 1));
+                                Move(gameTime, new Vector2(CurrentPosition.X, CurrentPosition.Y + 1));
 
-                            break;
-                        case 3:
-                            CurrentFrame.Y = 2;
+                                break;
+                            case 3:
+                                CurrentFrame.Y = 2;
 
-                            Move(gameTime, new Vector2(CurrentPosition.X + 1, CurrentPosition.Y));
+                                Move(gameTime, new Vector2(CurrentPosition.X + 1, CurrentPosition.Y));
 
-                            break;
-                        default:
-                            break;
+                                break;
+                            default:
+                                break;
+                        }
                     }
-                }
-            };
+                };
 
-            base.Update(gameTime);
+                base.Update(gameTime);
+            }
         }
 
         public override void Move(GameTime gameTime, Vector2 _newPosition)
@@ -91,10 +96,7 @@ namespace HonccaFest
 
             Keys currentKey = movementKeys[keyIndex];
 
-            if (Keyboard.GetState().IsKeyDown(currentKey))
-                return true;
-
-            return false;
+            return IsKeyDown(currentKey);
         }
     }
 }

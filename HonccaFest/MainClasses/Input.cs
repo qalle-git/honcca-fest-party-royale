@@ -56,5 +56,12 @@ namespace HonccaFest.MainClasses
 
             return keyboardState.GetPressedKeys();
         }
+
+        public static bool IsKeyDown(Keys key)
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            return keyboardState.IsKeyDown(key);
+        }
     }
 }

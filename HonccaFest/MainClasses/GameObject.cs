@@ -17,6 +17,27 @@ namespace HonccaFest.MainClasses
 
         public bool ChangingTile;
 
+
+        private float pixelPerMove = 2;
+        public float PixelPerMove
+        {
+            get
+            {
+                return pixelPerMove;
+            }
+            set
+            {
+                if (value > 4)
+                {
+                    pixelPerMove = 4;
+
+                    return;
+                }
+
+                pixelPerMove = value;
+            }
+        }
+
         public bool IsOutOfBounds
         {
             get
@@ -33,8 +54,6 @@ namespace HonccaFest.MainClasses
                 return false;
             }
         }
-
-        private const float pixelPerMove = 2f;
 
         public GameObject(Texture2D texture, Vector2 position)
         {
@@ -60,8 +79,6 @@ namespace HonccaFest.MainClasses
                 if (CurrentPixelPosition == new Vector2(CurrentPosition.X * Globals.TileSize.X, CurrentPosition.Y * Globals.TileSize.Y))
                 {
                     ChangingTile = false;
-
-                    Console.WriteLine("Done animation.");
                 }
             }
         }

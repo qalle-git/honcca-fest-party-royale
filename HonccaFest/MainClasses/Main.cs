@@ -91,10 +91,8 @@ namespace HonccaFest
 
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (IsKeyDown(Keys.Escape))
                 Exit();
-            //else if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            //    ChangeGameState(new Quackory());
 
             if (debug)
                 mapCreator.Update(gameTime);
