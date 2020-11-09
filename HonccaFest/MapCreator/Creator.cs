@@ -16,22 +16,13 @@ namespace HonccaFest.MapCreator
         private Vector2 currentPosition;
         private Vector2 currentPixelPosition;
 
-        private Point tileSize = new Point(32, 32);
+        private const string mapName = "Quackory";
 
         public Creator()
         {
-            currentMap = new Vector2[40, 23];
+            currentMap = new Vector2[Main.GameSize.X, Main.GameSize.Y];
 
-            List<int> levelOne = FileHandler.GetFile("Level1");
-
-            for (int currentX = 0; currentX < currentMap.GetLength(0); currentX++)
-                for (int currentY = 0; currentY < currentMap.GetLength(1); currentY++)
-                {
-                    int tileX = (currentX * 46) + (currentY * 2);
-                    int tileY = (currentX * 46) + (currentY * 2) + 1;
-
-                    currentMap[currentX, currentY] = new Vector2(levelOne[tileX], levelOne[tileY]);
-                }
+            LoadMap(mapName);
         }
 
         public void Update(GameTime gameTime)
@@ -126,6 +117,23 @@ namespace HonccaFest.MapCreator
                     lastMovement = gameTime.TotalGameTime;
             }
         }
+        
+        private void LoadMap(string mapName)
+        {
+            List<int> levelTiles = FileHandler.GetFile(mapName);
+
+            if (levelTiles.Count <= 0)
+                return;
+
+            for (int currentX = 0; currentX < currentMap.GetLength(0); currentX++)
+                for (int currentY = 0; currentY < currentMap.GetLength(1); currentY++)
+                {
+                    int tileX = (currentX * 46) + (currentY * 2);
+                    int tileY = (currentX * 46) + (currentY * 2) + 1;
+
+                    currentMap[currentX, currentY] = new Vector2(levelTiles[tileX], levelTiles[tileY]);
+                }
+        }
 
         private void SaveMap()
         {
@@ -138,9 +146,9 @@ namespace HonccaFest.MapCreator
                     saveList.Add((int)currentMap[currentX, currentY].Y);
                 }
 
-            FileHandler.AddFile("Level1", saveList);
+            FileHandler.AddFile(mapName, saveList);
 
-            Console.WriteLine($"Saving Map: Level1");
+            Console.WriteLine($"Saving Map: {mapName}");
         }
 
         private void AddToMap()
@@ -153,20 +161,15 @@ namespace HonccaFest.MapCreator
 
         private void HandleMovement(GameTime gameTime)
         {
-            Vector2 newPosition = new Vector2(currentPosition.X * tileSize.X, currentPosition.Y * tileSize.Y);
+            Vector2 newPosition = new Vector2(currentPosition.X * Main.TileSize.X, currentPosition.Y * Main.TileSize.Y);
 
             if (currentPixelPosition != newPosition)
-                currentPixelPosition = new Vector2(currentPosition.X * tileSize.X, currentPosition.Y * tileSize.Y);
+                currentPixelPosition = new Vector2(currentPosition.X * Main.TileSize.X, currentPosition.Y * Main.TileSize.Y);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Rectangle tileRectangle = new Rectangle((int)currentTile.X * tileSize.X, (int)currentTile.Y * tileSize.Y, tileSize.X, tileSize.Y);
-
-            if (currentTile.Y > 0 || currentTile.X > 0)
-                spriteBatch.Draw(Main.TileSet, new Rectangle((int)currentPixelPosition.X, (int)currentPixelPosition.Y, tileSize.X, tileSize.Y), tileRectangle, Color.White);
-
-            spriteBatch.Draw(Main.OutlineRectangle, new Rectangle((int)currentPixelPosition.X, (int)currentPixelPosition.Y, tileSize.X, tileSize.Y), Color.White);
+            Rectangle tileRectangle = new Rectangle((int)currentTile.X * Main.TileSize.X, (int)currentTile.Y * Main.TileSize.Y, Main.TileSize.X, Main.TileSize.Y);
 
             for (int currentX = 0; currentX < currentMap.GetLength(0); currentX++)
             {
@@ -175,13 +178,18 @@ namespace HonccaFest.MapCreator
                     Vector2 drawTile = currentMap[currentX, currentY];
 
                     if (drawTile.Y > 0 || drawTile.X > 0)
-                        spriteBatch.Draw(Main.TileSet, new Rectangle((int)currentX * tileSize.X, (int)currentY * tileSize.Y, tileSize.X, tileSize.Y), new Rectangle((int)drawTile.X * tileSize.X, (int)drawTile.Y * tileSize.Y, tileSize.X, tileSize.Y), Color.White);
+                        spriteBatch.Draw(Main.TileSet, new Rectangle((int)currentX * Main.TileSize.X, (int)currentY * Main.TileSize.Y, Main.TileSize.X, Main.TileSize.Y), new Rectangle((int)drawTile.X * Main.TileSize.X, (int)drawTile.Y * Main.TileSize.Y, Main.TileSize.X, Main.TileSize.Y), Color.White);
                 }
             }
 
-            spriteBatch.DrawString(Main.DebugFont, $"X: {currentPosition.X}\nY: {currentPosition.Y}", new Vector2(0, 0), Color.Black);
-            spriteBatch.DrawString(Main.DebugFont, $"TileX: {currentTile.X}\nTileY: {currentTile.Y}", new Vector2(0, 40), Color.Black);
-            spriteBatch.DrawString(Main.DebugFont, $"ENTER - PLACERA\nSPACE - SPARA", new Vector2(0, 80), Color.Black);
+            if (currentTile.Y > 0 || currentTile.X > 0)
+                spriteBatch.Draw(Main.TileSet, new Rectangle((int)currentPixelPosition.X, (int)currentPixelPosition.Y, Main.TileSize.X, Main.TileSize.Y), tileRectangle, Color.White);
+
+            spriteBatch.Draw(Main.OutlineRectangle, new Rectangle((int)currentPixelPosition.X, (int)currentPixelPosition.Y, Main.TileSize.X, Main.TileSize.Y), Color.White);
+
+            spriteBatch.DrawString(Main.DebugFont, $"X: {currentPosition.X}\nY: {currentPosition.Y}", new Vector2(0, 0), Color.White);
+            spriteBatch.DrawString(Main.DebugFont, $"TileX: {currentTile.X}\nTileY: {currentTile.Y}", new Vector2(0, 40), Color.White);
+            spriteBatch.DrawString(Main.DebugFont, $"ENTER - PLACERA\nSPACE - SPARA", new Vector2(0, 80), Color.White);
         }
     }
 }

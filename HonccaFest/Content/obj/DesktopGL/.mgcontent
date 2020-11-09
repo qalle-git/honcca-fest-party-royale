@@ -4,11 +4,17 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Dator/source/repos/HonccaFest/HonccaFest/Content/Fonts/debugFont.spritefont</File>
-    <File>C:/Users/Dator/source/repos/HonccaFest/HonccaFest/Content/Sprites/outlineRectangle.png</File>
-    <File>C:/Users/Dator/source/repos/HonccaFest/HonccaFest/Content/Tiles/tileSet.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Fonts/debugFont.spritefont</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/outlineRectangle.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/fireballSprite.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/playerOneCharacter.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/playerSpritesheet.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Tiles/tileSet.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File>SpriteSheets/fireballSpritesheet.png</File>
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

@@ -9,17 +9,10 @@ namespace HonccaFest.Tiles
 {
     class Tile
     {
-        public enum Types
+        public enum Type
         {
             NONE,
             COLLISION
-        }
-
-        public static void Draw(SpriteBatch spriteBatch)
-        {
-            Texture2D _tileSet = Main.TileSet;
-
-
         }
     }
 }

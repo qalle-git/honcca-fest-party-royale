@@ -40,3 +40,6 @@ F:\Github\honcca-fest-party-royale\HonccaFest\obj\Debug\HonccaFest.csprojAssembl
 F:\Github\honcca-fest-party-royale\HonccaFest\obj\Debug\HonccaFest.csproj.CopyComplete
 F:\Github\honcca-fest-party-royale\HonccaFest\obj\Debug\HonccaFest.exe
 F:\Github\honcca-fest-party-royale\HonccaFest\obj\Debug\HonccaFest.pdb
+F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\SpriteSheets\playerOneCharacter.xnb
+F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\SpriteSheets\playerSpritesheet.xnb
+F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\SpriteSheets\fireballSpritesheet.xnb

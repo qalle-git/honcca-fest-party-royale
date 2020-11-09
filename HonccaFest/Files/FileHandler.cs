@@ -24,9 +24,12 @@ namespace HonccaFest.Files
 
         public static List<int> GetFile(string fileName)
         {
-            StreamReader readFile = new StreamReader($"{fileName}.txt");
-
             List<int> fileLines = new List<int>();
+
+            if (!File.Exists($"{fileName}.txt"))
+                return fileLines;
+
+            StreamReader readFile = new StreamReader($"{fileName}.txt");
 
             string line = readFile.ReadLine();
 
