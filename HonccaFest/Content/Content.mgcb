@@ -76,6 +76,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/outlineRectangle.png
 
+#begin Sprites/taggerPointer.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/taggerPointer.png
+
 #begin Sprites/transparentRectangle.png
 /importer:TextureImporter
 /processor:TextureProcessor

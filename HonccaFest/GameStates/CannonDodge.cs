@@ -19,6 +19,14 @@ namespace HonccaFest.GameStates
 
         private readonly List<Placement> placements = new List<Placement>();
 
+        private readonly Vector2[] spawnPoints = new Vector2[]
+        {
+            new Vector2(5, 15),
+            new Vector2(11, 17),
+            new Vector2(19, 16),
+            new Vector2(30, 15)
+        };
+
         public CannonDodge() : base("CannonDodge")
         {
             fireballObjects = new List<GameObject>();
@@ -30,7 +38,7 @@ namespace HonccaFest.GameStates
             {
                 Player currentPlayer = players[currentPlayerIndex];
 
-                currentPlayer.ForceMove(new Vector2(currentPlayerIndex * 5, 15));
+                currentPlayer.ForceMove(spawnPoints[currentPlayerIndex]);
 
                 currentPlayer.MovementEnabled = true;
             }
@@ -93,8 +101,6 @@ namespace HonccaFest.GameStates
             }
 
             fireballSpawnCooldown = MathHelper.Clamp(fireballSpawnCooldown, 50, 1000);
-
-            Console.WriteLine($"Game speed: {fireballSpawnCooldown}");
         }
 
 		private void CollisionCheck(Player[] players)

@@ -22,6 +22,8 @@ namespace HonccaFest
         public static Texture2D OutlineRectangle;
         public static Texture2D TranparentRectangle;
         public static Texture2D CharacterSelectionArrow;
+        public static Texture2D TaggerArrow;
+
         public static Texture2D JoystickButtons;
 
         public static Texture2D PlayerOneSprite;
@@ -38,8 +40,6 @@ namespace HonccaFest
         public const int MaxPlayers = 4;
 
         public int GamemodesPlayed = 0;
-
-        public const bool MapCreator = true;
 
         public GameState CurrentGameState;
 
@@ -66,18 +66,19 @@ namespace HonccaFest
         {
             base.Initialize();
 
-            Instance = this;
-
             SoundHandler = new AudioHandler();
         }
 
         protected override void LoadContent()
         {
+            Instance = this;
+
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             TileSet = Content.Load<Texture2D>("Tiles/tileSet");
             OutlineRectangle = Content.Load<Texture2D>("Sprites/outlineRectangle");
             TranparentRectangle = Content.Load<Texture2D>("Sprites/transparentRectangle");
+            TaggerArrow = Content.Load<Texture2D>("Sprites/taggerPointer");
             CharacterSelectionArrow = Content.Load<Texture2D>("Sprites/characterSelectionArrow");
 
             JoystickButtons = Content.Load<Texture2D>("Sprites/joystick");
@@ -94,7 +95,7 @@ namespace HonccaFest
 
             for (int currentPlayerIndex = 0; currentPlayerIndex < MaxPlayers; currentPlayerIndex++)
             {
-                Player playerObject = new Player(PlayerOneSprite, new Vector2(currentPlayerIndex * (players.Length), 18), (KeySet)currentPlayerIndex);
+                Player playerObject = new Player(PlayerOneSprite, Vector2.Zero, (KeySet)currentPlayerIndex);
 
                 if (currentPlayerIndex > TotalPlayers - 1)
                     playerObject.Active = false;
@@ -132,9 +133,7 @@ namespace HonccaFest
 
             //CurrentGameState = new EndScreen(fakePlacements, "DuckTag");
 
-            CurrentGameState = new MainMenu();
-
-            CurrentGameState.Initialize(ref players);
+            ChangeGameState(new CannonDodge());
         }
 
         protected override void Update(GameTime gameTime)
@@ -167,10 +166,14 @@ namespace HonccaFest
 
         public void ChangeGameState(GameState _newGameState)
         {
+            lastGameState = _newGameState.LevelName;
+
             CurrentGameState = _newGameState;
 
             CurrentGameState.Initialize(ref players);
         }
+
+        private string lastGameState;
 
         /// <summary>
         /// This will get a random game state.
@@ -187,9 +190,23 @@ namespace HonccaFest
 
             if (wantGamemode)
 			{
-                int randomGamemodeIndex = Globals.RandomGenerator.Next(0, gameModes.Count);
+                GameState newGameState;
 
-                return gameModes[randomGamemodeIndex];
+                while (true)
+                {
+                    int randomGameState = Globals.RandomGenerator.Next(0, gameModes.Count);
+
+                    Console.WriteLine($"Checking {gameModes[randomGameState].LevelName} with {lastGameState}");
+
+                    if (gameModes[randomGameState].LevelName != lastGameState)
+                    {
+                        newGameState = gameModes[randomGameState];
+
+                        break;
+                    }
+                }
+
+                return newGameState;
 			}
 
             return new MainMenu();

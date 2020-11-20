@@ -10,6 +10,12 @@ using System.Threading.Tasks;
 
 namespace HonccaFest.GameStates
 {
+    struct ConnectPlayerTime
+    {
+        public int PlayerIndex;
+        public TimeSpan PlayerTagTime;
+    }
+
     class DuckTag : GameState
     {
         private int isTagger;
@@ -20,10 +26,9 @@ namespace HonccaFest.GameStates
 
         private TimeSpan lastTagged = TimeSpan.Zero;
         private TimeSpan totalGameDuration = TimeSpan.FromMinutes(1);
-        private TimeSpan currentGameDuration = TimeSpan.Zero;
         private TimeSpan[] playerTaggerTime;
 
-        private Vector2[] spawnPoints = new Vector2[]
+        private readonly Vector2[] spawnPoints = new Vector2[]
         {
             new Vector2(6, 6),
             new Vector2(9, 14),
@@ -44,14 +49,20 @@ namespace HonccaFest.GameStates
 
             isTagger = randomPlayerIndex;
 
-            playerTaggerTime = new TimeSpan[players.Length];
+            playerTaggerTime = new TimeSpan[Main.Instance.TotalPlayers];
         }
+
+        private TimeSpan lastGame = TimeSpan.Zero;
+        private GameTime currentGameTime;
 
         public override void Update(GameTime gameTime, Player[] players)
         {
-            currentGameDuration = gameTime.TotalGameTime;
+            if (lastGame == TimeSpan.Zero)
+                lastGame = gameTime.TotalGameTime;
 
-            if (currentGameDuration < totalGameDuration)
+            currentGameTime = gameTime;
+
+            if (gameTime.TotalGameTime < lastGame + totalGameDuration)
             {
                 Player tagger = players[isTagger];
 
@@ -68,11 +79,17 @@ namespace HonccaFest.GameStates
                         {
                             tagger.PixelPerMove = 2;
                             isTagger = playerIndex;
+                            players[isTagger].MovementEnabled = false;
                             lastTagged = gameTime.TotalGameTime;
 
                             break;
                         }
                     }
+                }
+
+                if (gameTime.TotalGameTime > lastTagged + tagCooldown)
+                {
+                    players[isTagger].MovementEnabled = true;
                 }
 
                 for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
@@ -81,14 +98,28 @@ namespace HonccaFest.GameStates
             else
             {
                 List<Placement> placements = new List<Placement>();
+                List<ConnectPlayerTime> temporaryTagTimes = new List<ConnectPlayerTime>();
 
-                for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
-                    placements.Add(new Placement()
+                for (int currentPlayerIndex = 0; currentPlayerIndex < playerTaggerTime.Length; currentPlayerIndex++)
+                    temporaryTagTimes.Add(new ConnectPlayerTime()
                     {
                         PlayerIndex = currentPlayerIndex,
-                        PlayerPlacement = currentPlayerIndex + 1,
-                        PlayerText = $"{Math.Floor(playerTaggerTime[currentPlayerIndex].TotalSeconds)}s"
+                        PlayerTagTime = playerTaggerTime[currentPlayerIndex]
                     });
+
+                temporaryTagTimes = temporaryTagTimes.OrderBy(tag => tag.PlayerTagTime).ToList();
+
+                for (int currentPlacement = 0; currentPlacement < temporaryTagTimes.Count; currentPlacement++)
+                {
+                    ConnectPlayerTime playerTime = temporaryTagTimes[currentPlacement];
+
+                    placements.Add(new Placement()
+                    {
+                        PlayerIndex = playerTime.PlayerIndex,
+                        PlayerPlacement = currentPlacement + 1,
+                        PlayerText = $"{Math.Floor(playerTime.PlayerTagTime.TotalSeconds)}s"
+                    });
+                }
 
                 Main.Instance.ChangeGameState(new EndScreen(placements, "DuckTag"));
             }
@@ -102,12 +133,21 @@ namespace HonccaFest.GameStates
             {
                 if (playerIndex == isTagger)
                 {
-                    spriteBatch.Draw(Main.OutlineRectangle, players[isTagger].CurrentPixelPosition, Color.Red);
+                    spriteBatch.Draw(Main.TaggerArrow, new Vector2(players[isTagger].CurrentPixelPosition.X, players[isTagger].CurrentPixelPosition.Y - Globals.GameSize.X), Color.Red);
                 }
             }
 
             for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
                 players[currentPlayerIndex].Draw(spriteBatch);
+
+            if (currentGameTime != null)
+            {
+                string scoreString = (totalGameDuration.TotalSeconds - currentGameTime.TotalGameTime.TotalSeconds + lastGame.TotalSeconds).ToString("0.0");
+
+                Vector2 fontSize = Main.ScoreFont.MeasureString(scoreString);
+
+                spriteBatch.DrawString(Main.ScoreFont, scoreString, new Vector2(Globals.ScreenSize.X / 2 - (fontSize.X / 2), Globals.ScreenSize.Y / 50), Color.White);
+            }
         }
     }
 }

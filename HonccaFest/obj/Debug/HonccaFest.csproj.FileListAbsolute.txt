@@ -105,3 +105,4 @@ F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content
 F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Fonts\scoreFont.xnb
 F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\characterSelectionArrow.xnb
 F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\joystick.xnb
+F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\taggerPointer.xnb

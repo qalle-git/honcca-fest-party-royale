@@ -14,10 +14,14 @@ namespace HonccaFest.MainClasses
     {
         public Tile[,][] Map;
 
+        public string LevelName;
+
         private const int maxLayersPerTile = 10;
 
         public GameState(string levelName)
         {
+            LevelName = levelName;
+
             Map = new Tile[Globals.GameSize.X, Globals.GameSize.Y][];
 
 			for (int currentX = 0; currentX < Map.GetLength(0); currentX++)
