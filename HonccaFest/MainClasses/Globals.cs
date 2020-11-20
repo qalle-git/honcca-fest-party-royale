@@ -11,8 +11,10 @@ namespace HonccaFest.MainClasses
     {
         public static Point ScreenSize = new Point(1280, 720);
 
-        public static Point TileSize = new Point(32, 32);
-        public static Point GameSize = new Point(40, 23);
+        public static Point TileSize = new Point(40, 40);
+        public static Point GameSize = new Point(32, 18);
+
+        public static int MaxGamemodes = 5;
 
         public static Random RandomGenerator = new Random();
     }

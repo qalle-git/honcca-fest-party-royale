@@ -9,7 +9,6 @@ namespace HonccaFest.MainClasses
 {
     public class Input
     {
-
         public enum KeySet
         {
             WASD,
@@ -39,16 +38,17 @@ namespace HonccaFest.MainClasses
                     Keys.Enter
                 }
             },
-            //{
-            //    KeySet.IJKL, new Keys[5]
-            //    {
-            //        Keys.I,
-            //        Keys.J,
-            //        Keys.K,
-            //        Keys.L
-            //    }
-            //}
-        };
+			{
+				KeySet.IJKL, new Keys[5]
+				{
+					Keys.I,
+					Keys.J,
+					Keys.K,
+					Keys.L,
+                    Keys.P
+				}
+			}
+		};
 
         public static Keys[] GetPressedKeys()
         {

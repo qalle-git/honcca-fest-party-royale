@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Fonts/mainFont.spritefont</SourceFile>
-  <SourceTime>2020-11-09T20:47:21.1305533+01:00</SourceTime>
+  <SourceTime>2020-11-10T00:39:26+01:00</SourceTime>
   <DestFile>F:/Github/honcca-fest-party-royale/HonccaFest/Content/bin/DesktopGL/Fonts/mainFont.xnb</DestFile>
-  <DestTime>2020-11-09T20:47:23.9789817+01:00</DestTime>
+  <DestTime>2020-11-20T16:25:00.5160692+01:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HonccaFest.Tiles;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace HonccaFest.MainClasses
         public Vector2 CurrentPixelPosition;
 
         public bool ChangingTile;
+
+        public bool Active = true;
 
         private float pixelPerMove = 2;
         public float PixelPerMove
@@ -54,6 +57,11 @@ namespace HonccaFest.MainClasses
             }
         }
 
+        public virtual Rectangle GetRectangle()
+		{
+            return new Rectangle((int)CurrentPixelPosition.X, (int)CurrentPixelPosition.Y, Texture.Width, Texture.Height);
+		}
+
         public GameObject(Texture2D texture, Vector2 position)
         {
             Texture = texture;
@@ -62,8 +70,11 @@ namespace HonccaFest.MainClasses
             CurrentPixelPosition = new Vector2(CurrentPosition.X * Globals.TileSize.X, CurrentPosition.Y * Globals.TileSize.Y);
         }
 
-        public virtual void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime, Tile[,][] map)
         {
+            if (!Active)
+                return;
+
             if (ChangingTile)
             {
                 if (CurrentPixelPosition.X < CurrentPosition.X * Globals.TileSize.X)
@@ -84,6 +95,9 @@ namespace HonccaFest.MainClasses
 
         public virtual void Draw(SpriteBatch sb)
         {
+            if (!Active)
+                return;
+
             Rectangle drawRectangle = new Rectangle((int)CurrentPixelPosition.X, (int)CurrentPixelPosition.Y, Globals.TileSize.X, Globals.TileSize.Y);
 
             sb.Draw(Texture, drawRectangle, Color.White);
@@ -92,7 +106,7 @@ namespace HonccaFest.MainClasses
         private TimeSpan movementCooldown = TimeSpan.FromMilliseconds(150);
         private TimeSpan lastMovement = TimeSpan.Zero;
 
-        public virtual void Move(GameTime gameTime, Vector2 _newPosition)
+        public virtual void Move(GameTime gameTime, Vector2 _newPosition, Tile[,][] _map)
         {
             if (gameTime.TotalGameTime > + lastMovement + movementCooldown && !ChangingTile)
             {

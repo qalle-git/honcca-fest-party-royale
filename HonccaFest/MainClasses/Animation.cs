@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HonccaFest.Tiles;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
@@ -28,9 +29,13 @@ namespace HonccaFest.MainClasses
             IDLE
         }
 
-        public Animation(Texture2D texture, Vector2 position) : base(texture, position)
+		public override Rectangle GetRectangle()
+		{
+            return new Rectangle((int)CurrentPixelPosition.X, (int)CurrentPixelPosition.Y, Globals.TileSize.X, Globals.TileSize.Y);
+        }
+
+		public Animation(Texture2D texture, Vector2 position) : base(texture, position)
         {
-            Console.WriteLine($"Created animation class.");
         }
 
         public void SetAnimationData(Point _totalFrames, Point _frameRange, Direction _direction, float _animationSpeed = 120f)
@@ -50,7 +55,7 @@ namespace HonccaFest.MainClasses
         private TimeSpan animationCooldown;
         private TimeSpan lastAnimation = TimeSpan.Zero;
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Tile[,][] map)
         {
             if (CurrentState == State.MOVING)
                 if (gameTime.TotalGameTime > lastAnimation + animationCooldown)
@@ -70,11 +75,14 @@ namespace HonccaFest.MainClasses
             else
                 CurrentState = State.IDLE;
 
-            base.Update(gameTime);
+            base.Update(gameTime, map);
         }
 
         public override void Draw(SpriteBatch sb)
         {
+            if (!Active)
+                return;
+
             Rectangle drawRectangle = new Rectangle((int)CurrentPixelPosition.X, (int)CurrentPixelPosition.Y, Globals.TileSize.X, Globals.TileSize.Y);
             Rectangle sourceRectangle = new Rectangle(CurrentFrame.X * Globals.TileSize.X, CurrentFrame.Y * Globals.TileSize.Y, Globals.TileSize.X, Globals.TileSize.Y);
 

@@ -7,8 +7,16 @@ using System.Threading.Tasks;
 
 namespace HonccaFest.Tiles
 {
-    class Tile
+    public struct Tile
     {
+		public int TileX;
+        public int TileY;
+
+        public int TileIndex;
+        public int TileLayer;   
+
+        public Type TileType;
+
         public enum Type
         {
             NONE,

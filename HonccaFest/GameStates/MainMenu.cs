@@ -1,4 +1,5 @@
 ﻿using HonccaFest.MainClasses;
+using HonccaFest.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -13,17 +14,23 @@ namespace HonccaFest.GameStates
         private string[] menuOptions = new string[]
         {
             "START",
+            "MAP CREATOR",
             "SETTINGS",
             "QUIT"
         };
 
-        public MainMenu() : base("MainMenu")
+        public MainMenu() : base("Test")
         {
         }
 
         public override void Initialize(ref Player[] players)
         {
-            players[0].MovementEnabled = false;
+			for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
+			{
+                Player currentPlayer = players[currentPlayerIndex];
+
+                currentPlayer.ForceMove(new Vector2(7, 5 + currentPlayerIndex));
+			}
         }
 
         private TimeSpan optionChangeCooldown = TimeSpan.FromMilliseconds(200);
@@ -62,7 +69,9 @@ namespace HonccaFest.GameStates
                                 if (menuOptionLabel == "QUIT")
                                     Main.Instance.Exit();
                                 else if (menuOptionLabel == "START")
-                                    Main.Instance.ChangeGameState(new CannonDodge());
+                                    Main.Instance.ChangeGameState(new CharacterSelection());
+                                else if (menuOptionLabel == "MAP CREATOR")
+                                    Main.Instance.ChangeGameState(new Creator());
 
                                 break;
                             default:
@@ -73,6 +82,9 @@ namespace HonccaFest.GameStates
                     }
                 };
             }
+
+            for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
+                players[currentPlayerIndex].Update(gameTime, Map);
         }
 
         private const int optionWidth = 300;
@@ -91,9 +103,12 @@ namespace HonccaFest.GameStates
 
                 Vector2 fontSize = Main.MainFont.MeasureString(currentMenuLabel);
 
-                spriteBatch.Draw(Main.OutlineRectangle, new Rectangle(startX, startY + (optionHeight * currentMenuIndex), optionWidth, optionHeight), currentOption == currentMenuIndex ? Color.Green : Color.Transparent);
-                spriteBatch.DrawString(Main.MainFont, currentMenuLabel, new Vector2(startX + (optionWidth / 2 - fontSize.X / 2), startY + (optionHeight * currentMenuIndex) + (fontSize.Y / 2)), currentOption == currentMenuIndex ? Color.Green : Color.White);
+                spriteBatch.Draw(Main.OutlineRectangle, new Rectangle(startX, startY + (optionHeight * currentMenuIndex), optionWidth, optionHeight), currentOption == currentMenuIndex ? Color.Red : Color.Transparent);
+                spriteBatch.DrawString(Main.MainFont, currentMenuLabel, new Vector2(startX + (optionWidth / 2 - fontSize.X / 2), startY + (optionHeight * currentMenuIndex) + (fontSize.Y / 2)), currentOption == currentMenuIndex ? Color.Red : Color.White);
             }
+
+            for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
+                players[currentPlayerIndex].Draw(spriteBatch);
         }
     }
 }

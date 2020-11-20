@@ -1,5 +1,6 @@
 ﻿using HonccaFest.MainClasses;
 using HonccaFest.Sound;
+using HonccaFest.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -21,97 +22,94 @@ namespace HonccaFest
         public Player(Texture2D texture, Vector2 position, KeySet _movementSet) : base(texture, position)
         {
             MovementSet = _movementSet;
+
+            SetAnimationData(new Point(3, 4), new Point(0, 3), Animation.Direction.RIGHT);
         }
 
         private TimeSpan honkCooldown = TimeSpan.FromMilliseconds(1000);
         private TimeSpan lastHonk = TimeSpan.Zero;
 
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime, Tile[,][] map)
         {
+            if (!Active)
+                return;
+
             if (MovementEnabled)
             {
-                if (!ActionKeys.ContainsKey(MovementSet))
-                    return;
+                int playerIndex = (int)MovementSet;
 
-                Keys[] movementKeys = ActionKeys[MovementSet];
+                if (MonoArcade.GetKey(playerIndex, ArcadeButton.Up))
+				{
+                    CurrentFrame.Y = 3;
 
-                for (int currentKeyIndex = 0; currentKeyIndex < movementKeys.Length; currentKeyIndex++)
-                {
-                    Keys currentKey = movementKeys[currentKeyIndex];
+                    Move(gameTime, new Vector2(CurrentPosition.X, CurrentPosition.Y - 1), map);
+                } else if (MonoArcade.GetKey(playerIndex, ArcadeButton.Left))
+				{
+                    CurrentFrame.Y = 1;
 
-                    if (IsKeyDown(currentKey))
+                    Move(gameTime, new Vector2(CurrentPosition.X - 1, CurrentPosition.Y), map);
+                } else if (MonoArcade.GetKey(playerIndex, ArcadeButton.Down))
+				{
+                    CurrentFrame.Y = 0;
+
+                    Move(gameTime, new Vector2(CurrentPosition.X, CurrentPosition.Y + 1), map);
+                } else if (MonoArcade.GetKey(playerIndex, ArcadeButton.Right))
+				{
+                    CurrentFrame.Y = 2;
+
+                    Move(gameTime, new Vector2(CurrentPosition.X + 1, CurrentPosition.Y), map);
+                } else if (MonoArcade.GetKey(playerIndex, ArcadeButton.Blue))
+				{
+                    if (gameTime.TotalGameTime > lastHonk + honkCooldown)
                     {
-                        switch (currentKeyIndex)
-                        {
-                            case 0:
-                                CurrentFrame.Y = 3;
+                        AudioEffect sound = new AudioEffect("quack_sound");
 
-                                Move(gameTime, new Vector2(CurrentPosition.X, CurrentPosition.Y - 1));
+                        sound.Play(0.1f, CurrentPixelPosition);
 
-                                break;
-                            case 1:
-                                CurrentFrame.Y = 1;
-
-                                Move(gameTime, new Vector2(CurrentPosition.X - 1, CurrentPosition.Y));
-
-                                break;
-                            case 2:
-                                CurrentFrame.Y = 0;
-
-                                Move(gameTime, new Vector2(CurrentPosition.X, CurrentPosition.Y + 1));
-
-                                break;
-                            case 3:
-                                CurrentFrame.Y = 2;
-
-                                Move(gameTime, new Vector2(CurrentPosition.X + 1, CurrentPosition.Y));
-
-                                break;
-                            case 4:
-                                if (gameTime.TotalGameTime > lastHonk + honkCooldown)
-                                {
-                                    AudioEffect sound = new AudioEffect("quack_sound");
-
-                                    sound.Play(0.1f, CurrentPixelPosition);
-
-                                    lastHonk = gameTime.TotalGameTime;
-                                }
-
-                                break;
-                            default:
-                                break;
-                        }
+                        lastHonk = gameTime.TotalGameTime;
                     }
-                };
+                }
 
-                base.Update(gameTime);
+                base.Update(gameTime, map);
             }
         }
 
-        public override void Move(GameTime gameTime, Vector2 _newPosition)
+		public override void Move(GameTime gameTime, Vector2 _newPosition, Tile[,][] _map)
         {
-            if (_newPosition.X >= Globals.GameSize.X)
+            if (_newPosition.X > Globals.GameSize.X - 1)
                 return;
             else if (_newPosition.X < 0)
                 return;
-            else if (_newPosition.Y >= Globals.GameSize.Y)
+            else if (_newPosition.Y > Globals.GameSize.Y - 1)
                 return;
             else if (_newPosition.Y < 0)
                 return;
 
-            base.Move(gameTime, _newPosition);
+            Tile[] tiles = _map[(int)_newPosition.X, (int)_newPosition.Y];
+
+            for (int currentTileIndex = 0; currentTileIndex < tiles.Length; currentTileIndex++)
+			{
+                Tile currentTile = tiles[currentTileIndex];
+
+                if (currentTile.TileType == Tile.Type.COLLISION)
+                    return;
+            }
+
+            base.Move(gameTime, _newPosition, _map);
         }
 
-        public bool IsUsingActionKey(int keyIndex)
+        public bool IsUsingActionKey(ArcadeButton currentKey)
         {
-            Keys[] movementKeys = ActionKeys[MovementSet];
+            int playerIndex = (int)MovementSet;
 
-            if (movementKeys.Length < keyIndex)
-                return false;
+            return MonoArcade.GetKey(playerIndex, currentKey);
+        }
 
-            Keys currentKey = movementKeys[keyIndex];
+        public bool JustPressedActionKey(ArcadeButton currentKey)
+        {
+            int playerIndex = (int)MovementSet;
 
-            return IsKeyDown(currentKey);
+            return MonoArcade.GetKeyDown(playerIndex, currentKey);
         }
     }
 }
