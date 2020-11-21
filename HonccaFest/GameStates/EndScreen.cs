@@ -33,7 +33,7 @@ namespace HonccaFest.GameStates
 
 				currentPlayer.CurrentPixelPosition = new Vector2(startX + (startX * (placement.PlayerPlacement - 1)), startY);
 
-				currentPlayer.Active = true;
+				currentPlayer.Active = MonoArcade.PlayerIsIngame(placement.PlayerIndex);
 			}
 		}
 
@@ -48,7 +48,7 @@ namespace HonccaFest.GameStates
 
 				GameState newGamemode = Main.Instance.GetRandomGameState(true);
 
-				Main.Instance.ChangeGameState(newGamemode);
+				Main.Instance.ChangeGameState(new Transition(newGamemode));
 			}
 		}
 		
@@ -68,25 +68,30 @@ namespace HonccaFest.GameStates
 		{
 			foreach (Placement placement in playerPlacements)
 			{
+				bool isInGame = MonoArcade.PlayerIsIngame(placement.PlayerIndex);
+
 				string currentPlayerString = $"Player {placement.PlayerIndex + 1}";
 
 				Vector2 fontSize = Main.ScoreFont.MeasureString(currentPlayerString);
 
-				spriteBatch.DrawString(Main.ScoreFont, currentPlayerString, new Vector2((startX + (startX * (placement.PlayerPlacement - 1))) + Globals.TileSize.X / 2 - fontSize.X / 2, startY - 100), Color.White);
+				spriteBatch.DrawString(Main.ScoreFont, currentPlayerString, new Vector2((startX + (startX * (placement.PlayerPlacement - 1))) + Globals.TileSize.X / 2 - fontSize.X / 2, startY - 100), isInGame ? Color.White : Color.DimGray);
 
-				string currentPlacementString = $"#{placement.PlayerPlacement}";
+				if (isInGame)
+				{
+					string currentPlacementString = $"#{placement.PlayerPlacement}";
 
-				Vector2 placementFontSize = Main.ScoreFont.MeasureString(currentPlacementString);
+					Vector2 placementFontSize = Main.ScoreFont.MeasureString(currentPlacementString);
 
-				spriteBatch.DrawString(Main.ScoreFont, currentPlacementString, new Vector2(startX + (startX * (placement.PlayerPlacement - 1)) + Globals.TileSize.X / 2 - placementFontSize.X / 2, startY + 50), Color.White);
+					spriteBatch.DrawString(Main.ScoreFont, currentPlacementString, new Vector2(startX + (startX * (placement.PlayerPlacement - 1)) + Globals.TileSize.X / 2 - placementFontSize.X / 2, startY + 50), Color.White);
 
-				string currentScoreString = $"{placement.PlayerText}";
+					string currentScoreString = $"{placement.PlayerText}";
 
-				Vector2 scoreFontSize = Main.ScoreFont.MeasureString(currentScoreString);
+					Vector2 scoreFontSize = Main.ScoreFont.MeasureString(currentScoreString);
 
-				spriteBatch.DrawString(Main.ScoreFont, currentScoreString, new Vector2(startX + (startX * (placement.PlayerPlacement - 1)) + Globals.TileSize.X / 2 - scoreFontSize.X / 2, startY + 125), Color.White);
-
-				spriteBatch.Draw(Main.OutlineRectangle, new Rectangle(startX + (startX * (placement.PlayerPlacement - 1)), startY, Globals.TileSize.X, Globals.TileSize.Y), Color.White);
+					spriteBatch.DrawString(Main.ScoreFont, currentScoreString, new Vector2(startX + (startX * (placement.PlayerPlacement - 1)) + Globals.TileSize.X / 2 - scoreFontSize.X / 2, startY + 125), Color.White);
+				
+					spriteBatch.Draw(Main.OutlineRectangle, new Rectangle(startX + (startX * (placement.PlayerPlacement - 1)), startY, Globals.TileSize.X, Globals.TileSize.Y), Color.White);
+				}
 			}
 		}
 	}

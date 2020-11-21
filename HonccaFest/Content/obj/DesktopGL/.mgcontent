@@ -9,6 +9,7 @@
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Fonts/scoreFont.spritefont</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sounds/quack_sound.wav</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/characterSelectionArrow.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/checkmark.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/joystick.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/outlineRectangle.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/taggerPointer.png</File>
@@ -19,6 +20,7 @@
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Tiles/tileSet.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

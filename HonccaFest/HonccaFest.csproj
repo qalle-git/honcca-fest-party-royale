@@ -56,6 +56,7 @@
     <Compile Include="GameStates\EndScreen.cs" />
     <Compile Include="GameStates\MainMenu.cs" />
     <Compile Include="GameStates\Quackory.cs" />
+    <Compile Include="GameStates\Transition.cs" />
     <Compile Include="MainClasses\Animation.cs" />
     <Compile Include="MainClasses\GameObject.cs" />
     <Compile Include="MainClasses\GameState.cs" />

@@ -16,6 +16,8 @@ namespace HonccaFest.MainClasses
 
         public static int MaxGamemodes = 5;
 
+        public static int MaxPlayers = 4;
+
         public static Random RandomGenerator = new Random();
     }
 }

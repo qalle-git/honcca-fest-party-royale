@@ -41,6 +41,16 @@ namespace HonccaFest.GameStates
                 currentPlayer.ForceMove(spawnPoints[currentPlayerIndex]);
 
                 currentPlayer.MovementEnabled = true;
+
+                if (!MonoArcade.PlayerIsIngame(currentPlayerIndex))
+                {
+                    placements.Add(new Placement()
+                    {
+                        PlayerIndex = currentPlayerIndex,
+                        PlayerPlacement = players.Length - placements.Count,
+                        PlayerText = ""
+                    });
+                }
             }
         }
 
@@ -120,13 +130,13 @@ namespace HonccaFest.GameStates
                         placements.Add(new Placement()
                         {
                             PlayerIndex = currentPlayerIndex,
-                            PlayerPlacement = Main.Instance.TotalPlayers - placements.Count,
+                            PlayerPlacement = players.Length - placements.Count,
                             PlayerText = ""
                         });
 
                         currentPlayer.Active = false;
 
-                        if (placements.Count >= Main.Instance.TotalPlayers)
+                        if (placements.Count >= players.Length)
 						{
                             Main.Instance.ChangeGameState(new EndScreen(placements, "CannonDodge"));
 

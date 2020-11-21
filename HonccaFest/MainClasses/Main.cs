@@ -23,6 +23,7 @@ namespace HonccaFest
         public static Texture2D TranparentRectangle;
         public static Texture2D CharacterSelectionArrow;
         public static Texture2D TaggerArrow;
+        public static Texture2D CheckMark;
 
         public static Texture2D JoystickButtons;
 
@@ -36,8 +37,7 @@ namespace HonccaFest
 
         public static AudioHandler SoundHandler;
 
-        public int TotalPlayers = 3;
-        public const int MaxPlayers = 4;
+        public int TotalPlayers = 0;
 
         public int GamemodesPlayed = 0;
 
@@ -75,65 +75,47 @@ namespace HonccaFest
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Tile SpriteSheet
             TileSet = Content.Load<Texture2D>("Tiles/tileSet");
+
+            // Sprites
             OutlineRectangle = Content.Load<Texture2D>("Sprites/outlineRectangle");
             TranparentRectangle = Content.Load<Texture2D>("Sprites/transparentRectangle");
             TaggerArrow = Content.Load<Texture2D>("Sprites/taggerPointer");
             CharacterSelectionArrow = Content.Load<Texture2D>("Sprites/characterSelectionArrow");
-
+            CheckMark = Content.Load<Texture2D>("Sprites/checkmark");
             JoystickButtons = Content.Load<Texture2D>("Sprites/joystick");
 
+            // SpriteSheets
             PlayerOneSprite = Content.Load<Texture2D>("SpriteSheets/playerSpritesheet");
             FireballSprite = Content.Load<Texture2D>("SpriteSheets/fireballSpritesheet");
 
+            // Fonts
             MainFont = Content.Load<SpriteFont>("Fonts/mainFont");
             ScoreFont = Content.Load<SpriteFont>("Fonts/scoreFont");
 
             DebugFont = Content.Load<SpriteFont>("Fonts/debugFont");
 
-            players = new Player[MaxPlayers];
+            players = new Player[Globals.MaxPlayers];
 
-            for (int currentPlayerIndex = 0; currentPlayerIndex < MaxPlayers; currentPlayerIndex++)
+            MonoArcade.ActivateDebug(false, true, true, false);
+
+            for (int currentPlayerIndex = 0; currentPlayerIndex < Globals.MaxPlayers; currentPlayerIndex++)
             {
-                Player playerObject = new Player(PlayerOneSprite, Vector2.Zero, (KeySet)currentPlayerIndex);
+                bool isInGame = MonoArcade.PlayerIsIngame(currentPlayerIndex);
 
-                if (currentPlayerIndex > TotalPlayers - 1)
-                    playerObject.Active = false;
+                Player playerObject = new Player(PlayerOneSprite, Vector2.Zero, (KeySet)currentPlayerIndex)
+                {
+                    Active = isInGame
+                };
+
+                if (isInGame)
+                    TotalPlayers++;
 
                 players[currentPlayerIndex] = playerObject;
             }
 
-            //List<Placement> fakePlacements = new List<Placement>()
-            //{
-            //	new Placement()
-            //	{
-            //		PlayerIndex = 1,
-            //		PlayerPlacement = 1,
-            //		PlayerText = "15s"
-            //	},
-            //	new Placement()
-            //	{
-            //		PlayerIndex = 0,
-            //		PlayerPlacement = 2,
-            //		PlayerText = "29s"
-            //	},
-            //	new Placement()
-            //	{
-            //		PlayerIndex = 2,
-            //		PlayerPlacement = 3,
-            //		PlayerText = "31s"
-            //	},
-            //	new Placement()
-            //	{
-            //		PlayerIndex = 3,
-            //		PlayerPlacement = 4,
-            //		PlayerText = "5s"
-            //	},
-            //};
-
-            //CurrentGameState = new EndScreen(fakePlacements, "DuckTag");
-
-            ChangeGameState(new CannonDodge());
+            ChangeGameState(new CharacterSelection());
         }
 
         protected override void Update(GameTime gameTime)
@@ -157,6 +139,7 @@ namespace HonccaFest
 
             spriteBatch.Begin();
 
+            // Draw current gameState, map, players, ui etc.
             CurrentGameState.Draw(spriteBatch, players);
 
             spriteBatch.End();
@@ -164,6 +147,10 @@ namespace HonccaFest
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Change the current GameState to a new specified one.
+        /// </summary>
+        /// <param name="_newGameState">The new gamestate object.</param>
         public void ChangeGameState(GameState _newGameState)
         {
             lastGameState = _newGameState.LevelName;

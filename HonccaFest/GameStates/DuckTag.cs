@@ -25,8 +25,11 @@ namespace HonccaFest.GameStates
         private TimeSpan tagCooldown = TimeSpan.FromMilliseconds(2000);
 
         private TimeSpan lastTagged = TimeSpan.Zero;
-        private TimeSpan totalGameDuration = TimeSpan.FromMinutes(1);
+        private TimeSpan totalGameDuration = TimeSpan.FromMinutes(0.05);
         private TimeSpan[] playerTaggerTime;
+
+        private float taggerArrowY;
+        private float taggerArrowDirection;
 
         private readonly Vector2[] spawnPoints = new Vector2[]
         {
@@ -38,18 +41,26 @@ namespace HonccaFest.GameStates
 
         public DuckTag() : base("DuckTag")
         {
+            taggerArrowY = Globals.GameSize.Y;
+            taggerArrowDirection = 1;
         }
 
         public override void Initialize(ref Player[] players)
         {
-            for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
-                players[currentPlayerIndex].ForceMove(spawnPoints[currentPlayerIndex]);
+            playerTaggerTime = new TimeSpan[players.Length];
 
-            int randomPlayerIndex = Globals.RandomGenerator.Next(0, Main.Instance.TotalPlayers);
+            for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
+            {
+                players[currentPlayerIndex].ForceMove(spawnPoints[currentPlayerIndex]);
+                    
+                // Force players that arent in the game to lose.
+                if (!MonoArcade.PlayerIsIngame(currentPlayerIndex))
+                    playerTaggerTime[currentPlayerIndex] = TimeSpan.FromMinutes(60);
+            }
+
+            int randomPlayerIndex = Globals.RandomGenerator.Next(0, players.Length);
 
             isTagger = randomPlayerIndex;
-
-            playerTaggerTime = new TimeSpan[Main.Instance.TotalPlayers];
         }
 
         private TimeSpan lastGame = TimeSpan.Zero;
@@ -68,6 +79,13 @@ namespace HonccaFest.GameStates
 
                 if (!tagger.ChangingTile)
                     tagger.PixelPerMove = 4;
+
+                taggerArrowY += taggerArrowDirection;
+
+                if (taggerArrowY < Globals.GameSize.X)
+                    taggerArrowDirection = 0.4f;
+                if (taggerArrowY > Globals.GameSize.X * 1.3)
+                    taggerArrowDirection = -0.4f;
 
                 playerTaggerTime[isTagger] += gameTime.ElapsedGameTime;
 
@@ -133,7 +151,7 @@ namespace HonccaFest.GameStates
             {
                 if (playerIndex == isTagger)
                 {
-                    spriteBatch.Draw(Main.TaggerArrow, new Vector2(players[isTagger].CurrentPixelPosition.X, players[isTagger].CurrentPixelPosition.Y - Globals.GameSize.X), Color.Red);
+                    spriteBatch.Draw(Main.TaggerArrow, new Vector2(players[isTagger].CurrentPixelPosition.X, players[isTagger].CurrentPixelPosition.Y - taggerArrowY), Color.Red);
                 }
             }
 
