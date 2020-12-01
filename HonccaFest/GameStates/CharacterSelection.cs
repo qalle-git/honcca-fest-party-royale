@@ -62,16 +62,12 @@ namespace HonccaFest.GameStates
                 if (chosenCharacterRanges[currentPlayerIndex] < characterRanges.Length - 1)
                 {
                     if (currentPlayer.JustPressedActionKey(ArcadeButton.Right))
-                    {
                         ChangePlayerCharacter(currentPlayerIndex, 1, players);
-                    }
                 }
                 if (chosenCharacterRanges[currentPlayerIndex] > 0)
                 {
                     if (currentPlayer.JustPressedActionKey(ArcadeButton.Left))
-                    {
                         ChangePlayerCharacter(currentPlayerIndex, -1, players);
-                    }
                 }
 
             if (currentPlayer.JustPressedActionKey(ArcadeButton.Red))
@@ -94,10 +90,8 @@ namespace HonccaFest.GameStates
             }
 
             if (playersReady >= Main.Instance.TotalPlayers)
-            {
                 if (gameTime.TotalGameTime > playersWentReady + startTimer)
                     Main.Instance.ChangeGameState(new Transition(Main.Instance.GetRandomGameState(true)));
-            }
             else
                 playersWentReady = gameTime.TotalGameTime;
 
@@ -107,11 +101,12 @@ namespace HonccaFest.GameStates
         {
             Player currentPlayer = players[currentPlayerIndex];
 
+            if (!currentPlayer.Active)
+                return;
+
             chosenCharacterRanges[currentPlayerIndex] += newIndex;
 
             currentPlayer.SetAnimationData(currentPlayer.TotalFrames, characterRanges[chosenCharacterRanges[currentPlayerIndex]], Animation.Direction.RIGHT);
-
-            Console.WriteLine($"{currentPlayerIndex} just changed to: {chosenCharacterRanges[currentPlayerIndex]}");
         }
 
         public override void Draw(SpriteBatch spriteBatch, Player[] players)
@@ -156,11 +151,11 @@ namespace HonccaFest.GameStates
                 }
             }
 
-            string instructionJoystickString = $"READY";
+            string instructionJoystickString = $"READY UP";
 
             Vector2 instructionFontSize = Main.ScoreFont.MeasureString(instructionJoystickString);
 
-            spriteBatch.DrawString(Main.ScoreFont, instructionJoystickString, new Vector2(Globals.ScreenSize.X / 2 - instructionFontSize.X / 2, startY + 100), Color.Green);
+            spriteBatch.DrawString(Main.ScoreFont, instructionJoystickString, new Vector2(Globals.ScreenSize.X / 2 - instructionFontSize.X / 2, startY + 100), Color.DimGray);
 
             int buttonSize = Globals.TileSize.X;
 

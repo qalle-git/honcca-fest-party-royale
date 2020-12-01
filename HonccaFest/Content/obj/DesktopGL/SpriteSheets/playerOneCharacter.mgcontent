@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/playerOneCharacter.png</SourceFile>
-  <SourceTime>2020-11-10T00:39:26+01:00</SourceTime>
-  <DestFile>F:/Github/honcca-fest-party-royale/HonccaFest/Content/bin/DesktopGL/SpriteSheets/playerOneCharacter.xnb</DestFile>
-  <DestTime>2020-11-20T16:25:01.1898014+01:00</DestTime>
+  <SourceFile>C:/Users/carl.aberg2/Desktop/honcca-fest-party-royale-master/HonccaFest/Content/SpriteSheets/playerOneCharacter.png</SourceFile>
+  <SourceTime>2020-11-21T21:13:18+01:00</SourceTime>
+  <DestFile>C:/Users/carl.aberg2/Desktop/honcca-fest-party-royale-master/HonccaFest/Content/bin/DesktopGL/SpriteSheets/playerOneCharacter.xnb</DestFile>
+  <DestTime>2020-11-23T12:55:36.6373045+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

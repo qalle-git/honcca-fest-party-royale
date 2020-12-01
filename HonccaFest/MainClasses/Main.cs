@@ -98,7 +98,8 @@ namespace HonccaFest
 
             players = new Player[Globals.MaxPlayers];
 
-            MonoArcade.ActivateDebug(false, true, true, false);
+            if (Globals.DebugMode)
+                MonoArcade.ActivateDebug(false, true, true, false);
 
             for (int currentPlayerIndex = 0; currentPlayerIndex < Globals.MaxPlayers; currentPlayerIndex++)
             {
@@ -115,7 +116,10 @@ namespace HonccaFest
                 players[currentPlayerIndex] = playerObject;
             }
 
-            ChangeGameState(new CharacterSelection());
+            if (Globals.DebugMode)
+                ChangeGameState(new MainMenu());
+            else
+                ChangeGameState(new CharacterSelection());
         }
 
         protected override void Update(GameTime gameTime)
@@ -125,7 +129,7 @@ namespace HonccaFest
 
             CurrentGameState.Update(gameTime, players);
 
-            if (GamemodesPlayed > Globals.MaxGamemodes)
+            if (GamemodesPlayed > Globals.MaxGameModes)
                 Exit();
             else if (IsAfk(gameTime))
                 Exit();
@@ -177,23 +181,14 @@ namespace HonccaFest
 
             if (wantGamemode)
 			{
-                GameState newGameState;
+                int randomGameState = Globals.RandomGenerator.Next(0, gameModes.Count);
 
-                while (true)
-                {
-                    int randomGameState = Globals.RandomGenerator.Next(0, gameModes.Count);
+                Console.WriteLine($"Checking {gameModes[randomGameState].LevelName} with {lastGameState}");
 
-                    Console.WriteLine($"Checking {gameModes[randomGameState].LevelName} with {lastGameState}");
+                if (gameModes[randomGameState].LevelName == lastGameState)
+                    return GetRandomGameState(true);
 
-                    if (gameModes[randomGameState].LevelName != lastGameState)
-                    {
-                        newGameState = gameModes[randomGameState];
-
-                        break;
-                    }
-                }
-
-                return newGameState;
+                return gameModes[randomGameState];
 			}
 
             return new MainMenu();

@@ -52,10 +52,12 @@
     <Compile Include="GameStates\CannonDodge.cs" />
     <Compile Include="GameStates\CharacterSelection.cs" />
     <Compile Include="GameStates\Creator.cs" />
+    <Compile Include="GameStates\DuckDance.cs" />
     <Compile Include="GameStates\DuckTag.cs" />
     <Compile Include="GameStates\EndScreen.cs" />
     <Compile Include="GameStates\MainMenu.cs" />
     <Compile Include="GameStates\Quackory.cs" />
+    <Compile Include="GameStates\TestingArea.cs" />
     <Compile Include="GameStates\Transition.cs" />
     <Compile Include="MainClasses\Animation.cs" />
     <Compile Include="MainClasses\GameObject.cs" />

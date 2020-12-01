@@ -20,7 +20,7 @@ namespace HonccaFest.GameStates
         private Vector2 currentPosition;
         private Vector2 currentPixelPosition;
 
-        private const string mapName = "CannonDodge";
+        private const string mapName = "DuckDance";
 
         public Creator() : base(mapName)
         {

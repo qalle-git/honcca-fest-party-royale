@@ -16,6 +16,10 @@ namespace HonccaFest.MainClasses
         public Vector2 CurrentPosition;
         public Vector2 CurrentPixelPosition;
 
+        public SpriteEffects CurrentSpriteEffect = SpriteEffects.None;
+
+        public float Rotation;
+
         public bool ChangingTile;
 
         public bool Active = true;
@@ -100,7 +104,7 @@ namespace HonccaFest.MainClasses
 
             Rectangle drawRectangle = new Rectangle((int)CurrentPixelPosition.X, (int)CurrentPixelPosition.Y, Globals.TileSize.X, Globals.TileSize.Y);
 
-            sb.Draw(Texture, drawRectangle, Color.White);
+            sb.Draw(Texture, drawRectangle, new Rectangle(0, 0, Texture.Width, Texture.Height), Color.White, Rotation, Vector2.Zero, CurrentSpriteEffect, 0);
         }
 
         private TimeSpan movementCooldown = TimeSpan.FromMilliseconds(150);

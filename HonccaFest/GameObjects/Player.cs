@@ -34,7 +34,7 @@ namespace HonccaFest
             if (!Active)
                 return;
 
-            if (MovementEnabled)
+            if (MovementEnabled && !ChangingTile)
             {
                 int playerIndex = (int)MovementSet;
 
@@ -69,12 +69,12 @@ namespace HonccaFest
                         lastHonk = gameTime.TotalGameTime;
                     }
                 }
-
-                base.Update(gameTime, map);
             }
+
+            base.Update(gameTime, map);
         }
 
-		public override void Move(GameTime gameTime, Vector2 _newPosition, Tile[,][] _map)
+        public override void Move(GameTime gameTime, Vector2 _newPosition, Tile[,][] _map)
         {
             if (_newPosition.X > Globals.GameSize.X - 1)
                 return;

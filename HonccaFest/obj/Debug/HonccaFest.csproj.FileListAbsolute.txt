@@ -107,3 +107,9 @@ F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content
 F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\joystick.xnb
 F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\taggerPointer.xnb
 F:\Github\honcca-fest-party-royale\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\checkmark.xnb
+C:\Users\carl.aberg2\Desktop\honcca-fest-party-royale-master\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Fonts\scoreFont.xnb
+C:\Users\carl.aberg2\Desktop\honcca-fest-party-royale-master\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\characterSelectionArrow.xnb
+C:\Users\carl.aberg2\Desktop\honcca-fest-party-royale-master\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\checkmark.xnb
+C:\Users\carl.aberg2\Desktop\honcca-fest-party-royale-master\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\joystick.xnb
+C:\Users\carl.aberg2\Desktop\honcca-fest-party-royale-master\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\taggerPointer.xnb
+C:\Users\carl.aberg2\Desktop\honcca-fest-party-royale-master\HonccaFest\bin\DesktopGL\AnyCPU\Debug\Content\Sprites\transparentRectangle.xnb

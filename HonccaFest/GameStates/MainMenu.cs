@@ -11,10 +11,12 @@ namespace HonccaFest.GameStates
     class MainMenu : GameState
     {
         private int currentOption;
-        private string[] menuOptions = new string[]
+        private readonly string[] menuOptions = new string[]
         {
             "START",
+            "TESTING AREA",
             "MAP CREATOR",
+            "DUCK DANCE",
             "SETTINGS",
             "QUIT"
         };
@@ -72,6 +74,10 @@ namespace HonccaFest.GameStates
                                     Main.Instance.ChangeGameState(new CharacterSelection());
                                 else if (menuOptionLabel == "MAP CREATOR")
                                     Main.Instance.ChangeGameState(new Creator());
+                                else if (menuOptionLabel == "TESTING AREA")
+                                    Main.Instance.ChangeGameState(new TestingArea());
+                                else if (menuOptionLabel == "DUCK DANCE")
+                                    Main.Instance.ChangeGameState(new DuckDance());
 
                                 break;
                             default:

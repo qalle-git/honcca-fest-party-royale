@@ -34,6 +34,8 @@ namespace HonccaFest.GameStates
 				currentPlayer.CurrentPixelPosition = new Vector2(startX + (startX * (placement.PlayerPlacement - 1)), startY);
 
 				currentPlayer.Active = MonoArcade.PlayerIsIngame(placement.PlayerIndex);
+
+				MonoArcade.AddScore(placement.PlayerIndex, Main.Instance.TotalPlayers - placement.PlayerPlacement);
 			}
 		}
 

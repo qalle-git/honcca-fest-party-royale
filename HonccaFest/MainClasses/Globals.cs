@@ -9,12 +9,14 @@ namespace HonccaFest.MainClasses
 {
     class Globals
     {
+        public static bool DebugMode = true;
+
         public static Point ScreenSize = new Point(1280, 720);
 
         public static Point TileSize = new Point(40, 40);
         public static Point GameSize = new Point(32, 18);
 
-        public static int MaxGamemodes = 5;
+        public static int MaxGameModes = 5;
 
         public static int MaxPlayers = 4;
 
