@@ -1,2 +1,2 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/loadingCircle.png","F:/Github/honcca-fest-party-royale/HonccaFest/Content/bin/DesktopGL/SpriteSheets/loadingCircle.xnb","TextureProcessor","Texture2DContent",10079,307285,0,1725387
+"F:/Github/honcca-fest-party-royale/HonccaFest/Content/Tiles/tileSet.png","F:/Github/honcca-fest-party-royale/HonccaFest/Content/bin/DesktopGL/Tiles/tileSet.xnb","TextureProcessor","Texture2DContent",323770,2240085,0,1870069
