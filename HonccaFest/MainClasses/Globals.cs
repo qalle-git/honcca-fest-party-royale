@@ -19,7 +19,7 @@ namespace HonccaFest.MainClasses
         public static Point TileSize = new Point(40, 40);
         public static Point GameSize = new Point(32, 18);
 
-        public static int MaxGameModes = 5;
+        public static int MaxGameModes = 10;
 
         public static int MaxPlayers = 4;
 

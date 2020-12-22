@@ -10,7 +10,7 @@ namespace HonccaFest.GameStates
 {
     class DuckOut : GameState
     {
-        private const float endGameTimerInMilliseconds = 60000 * 2;
+        private const float endGameTimerInMilliseconds = 60000 * 1.5f;
         private Timer endGameTimer;
 
         private readonly Vector2[] spawnPoints = new Vector2[]
@@ -60,6 +60,8 @@ namespace HonccaFest.GameStates
                 }
             }
 
+            Main.MusicHandler.Play("engines_revved");
+
             endGameTimer = new Timer(endGameTimerInMilliseconds);
         }
 
@@ -97,21 +99,6 @@ namespace HonccaFest.GameStates
                 PlayerPlacement = 1,
                 PlayerText = "BEAST"
             });
-
-            for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
-            {
-                Player currentPlayer = players[currentPlayerIndex];
-
-                if (currentPlayer.Active && currentPlayer != winner)
-                {
-                    placements.Add(new Placement()
-                    {
-                        PlayerIndex = currentPlayerIndex,
-                        PlayerPlacement = players.Length - placements.Count + 1,
-                        PlayerText = "BEAST"
-                    });
-                }
-            }
 
             Globals.DebugPrint("Finish game.");
 

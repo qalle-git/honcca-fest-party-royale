@@ -24,7 +24,7 @@ namespace HonccaFest.GameStates
         private Vector2 currentPosition;
         private Vector2 currentPixelPosition;
 
-        private const string mapName = "DuckOut";
+        private const string mapName = "DuckyRoad";
 
         public Creator() : base(mapName)
         {

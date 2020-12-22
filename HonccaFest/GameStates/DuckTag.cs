@@ -141,6 +141,7 @@ namespace HonccaFest.GameStates
                     });
 
                     players[currentPlayerIndex].PixelPerMove = 2;
+                    players[currentPlayerIndex].MovementEnabled = true;
                 }
 
                 temporaryTagTimes = temporaryTagTimes.OrderBy(tag => tag.PlayerTime).ToList();
