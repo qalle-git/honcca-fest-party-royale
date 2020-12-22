@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Songs/engines_revved.mp3</SourceFile>
+  <SourceTime>2020-12-01T14:49:01.6505979+01:00</SourceTime>
+  <DestFile>F:/Github/honcca-fest-party-royale/HonccaFest/Content/bin/DesktopGL/Songs/engines_revved.xnb</DestFile>
+  <DestTime>2020-12-01T14:49:20.7695732+01:00</DestTime>
+  <Importer>Mp3Importer</Importer>
+  <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
+  <Processor>SongProcessor</Processor>
+  <ProcessorTime>2018-12-08T17:35:54+01:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput>
+    <string>F:/Github/honcca-fest-party-royale/HonccaFest/Content/bin/DesktopGL/Songs/engines_revved.ogg</string>
+  </BuildOutput>
+</PipelineBuildEvent>

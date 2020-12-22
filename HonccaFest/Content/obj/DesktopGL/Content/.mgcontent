@@ -7,15 +7,31 @@
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Fonts/debugFont.spritefont</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Fonts/mainFont.spritefont</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Fonts/scoreFont.spritefont</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Songs/duck_tag.mp3</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Songs/engines_revved.mp3</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Songs/loading.mp3</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Songs/lose_stinger.mp3</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Songs/new_eyes.mp3</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Songs/wandering_maze.mp3</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sounds/cannon_sound.wav</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sounds/coin_sound.wav</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sounds/finish_sound.wav</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sounds/quack_sound.wav</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/cannonBallSprite.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/characterSelectionArrow.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/checkmark.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/duckyRoadBase.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/filledRectangle.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/honccaLogo.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/joystick.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/outlineRectangle.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/taggerPointer.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/transparentRectangle.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/cannonSprite.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/car spritesheet.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/coinSpritesheet.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/fireballSprite.png</File>
-    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/playerOneCharacter.png</File>
+    <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/loadingCircle.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/SpriteSheets/playerSpritesheet.png</File>
     <File>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Tiles/tileSet.png</File>
   </SourceFiles>
@@ -29,6 +45,22 @@
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File>SpriteSheets/carSpritesheet.png</File>
     <File xsi:nil="true" />
     <File>SpriteSheets/fireballSpritesheet.png</File>
     <File xsi:nil="true" />

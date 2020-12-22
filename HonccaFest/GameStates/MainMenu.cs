@@ -1,5 +1,8 @@
-﻿using HonccaFest.MainClasses;
-using HonccaFest.Tiles;
+﻿// MainMenu.cs | Debug Mode Only
+// Author Carl Åberg
+// LBS Kreativa Gymnasiet
+
+using HonccaFest.MainClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,7 +19,7 @@ namespace HonccaFest.GameStates
             "START",
             "TESTING AREA",
             "MAP CREATOR",
-            "DUCK DANCE",
+            "CUSTOM GAMEMODE",
             "SETTINGS",
             "QUIT"
         };
@@ -40,6 +43,8 @@ namespace HonccaFest.GameStates
 
         public override void Update(GameTime gameTime, Player[] players)
         {
+            StunHandler(gameTime, players);
+
             Player playerOne = players[0];
 
             if (gameTime.TotalGameTime > lastOptionChange + optionChangeCooldown)
@@ -71,13 +76,13 @@ namespace HonccaFest.GameStates
                                 if (menuOptionLabel == "QUIT")
                                     Main.Instance.Exit();
                                 else if (menuOptionLabel == "START")
-                                    Main.Instance.ChangeGameState(new CharacterSelection());
+                                    Main.Instance.ChangeGameState(new SplashScreen(new CharacterSelection()));
                                 else if (menuOptionLabel == "MAP CREATOR")
                                     Main.Instance.ChangeGameState(new Creator());
                                 else if (menuOptionLabel == "TESTING AREA")
                                     Main.Instance.ChangeGameState(new TestingArea());
-                                else if (menuOptionLabel == "DUCK DANCE")
-                                    Main.Instance.ChangeGameState(new DuckDance());
+                                else if (menuOptionLabel == "CUSTOM GAMEMODE")
+                                    Main.Instance.ChangeGameState(new Transition(new DuckOut()));
 
                                 break;
                             default:
@@ -109,7 +114,7 @@ namespace HonccaFest.GameStates
 
                 Vector2 fontSize = Main.MainFont.MeasureString(currentMenuLabel);
 
-                spriteBatch.Draw(Main.OutlineRectangle, new Rectangle(startX, startY + (optionHeight * currentMenuIndex), optionWidth, optionHeight), currentOption == currentMenuIndex ? Color.Red : Color.Transparent);
+                spriteBatch.Draw(Main.GraphicsHandler.GetSprite("OutlineRectangle"), new Rectangle(startX, startY + (optionHeight * currentMenuIndex), optionWidth, optionHeight), currentOption == currentMenuIndex ? Color.Red : Color.Transparent);
                 spriteBatch.DrawString(Main.MainFont, currentMenuLabel, new Vector2(startX + (optionWidth / 2 - fontSize.X / 2), startY + (optionHeight * currentMenuIndex) + (fontSize.Y / 2)), currentOption == currentMenuIndex ? Color.Red : Color.White);
             }
 

@@ -1,11 +1,11 @@
-﻿using HonccaFest.MainClasses;
+﻿// CharacterSelection.cs
+// Author Carl Åberg
+// LBS Kreativa Gymnasiet
+
+using HonccaFest.MainClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HonccaFest.GameStates
 {
@@ -40,8 +40,11 @@ namespace HonccaFest.GameStates
             {
                 Player currentPlayer = players[currentPlayerIndex];
 
-                currentPlayer.CurrentPixelPosition = new Vector2(startX + (startX * (currentPlayerIndex + 1 - 1)), startY);
+                currentPlayer.CurrentPixelPosition = new Vector2(startX + (startX * (currentPlayerIndex)), startY);
+                currentPlayer.CurrentFrame.Y = 0;
             }
+
+            Main.MusicHandler.Play("new_eyes");
         }
 
         public override void Update(GameTime gameTime, Player[] players)
@@ -59,19 +62,25 @@ namespace HonccaFest.GameStates
             bool isReady = playersReadyArray[currentPlayerIndex];
 
             if (!isReady)
+            {
                 if (chosenCharacterRanges[currentPlayerIndex] < characterRanges.Length - 1)
-                {
                     if (currentPlayer.JustPressedActionKey(ArcadeButton.Right))
                         ChangePlayerCharacter(currentPlayerIndex, 1, players);
-                }
                 if (chosenCharacterRanges[currentPlayerIndex] > 0)
-                {
                     if (currentPlayer.JustPressedActionKey(ArcadeButton.Left))
                         ChangePlayerCharacter(currentPlayerIndex, -1, players);
-                }
+            }
 
             if (currentPlayer.JustPressedActionKey(ArcadeButton.Red))
+            {
+                // Check if the character is free to take.
+                if (!isReady)
+                    for (int currentChosenIndex = 0; currentChosenIndex < players.Length; currentChosenIndex++)
+                        if (currentChosenIndex != currentPlayerIndex && playersReadyArray[currentChosenIndex] && chosenCharacterRanges[currentChosenIndex] == chosenCharacterRanges[currentPlayerIndex])
+                            return;
+
                 playersReadyArray[currentPlayerIndex] = !playersReadyArray[currentPlayerIndex];
+            }
         }
 
         private TimeSpan playersWentReady = TimeSpan.Zero;
@@ -79,22 +88,16 @@ namespace HonccaFest.GameStates
 
         private void StartGameHandler(GameTime gameTime, Player[] players)
         {
-            int playersReady = 0;
+            int playersCurrentlyReady = PlayersReady();
 
-            for (int currentPlayerIndex = 0; currentPlayerIndex < playersReadyArray.Length; currentPlayerIndex++)
+            if (playersCurrentlyReady >= Main.Instance.TotalPlayers)
             {
-                bool playerIsReady = playersReadyArray[currentPlayerIndex];
-
-                if (playerIsReady)
-                    playersReady++;
-            }
-
-            if (playersReady >= Main.Instance.TotalPlayers)
                 if (gameTime.TotalGameTime > playersWentReady + startTimer)
                     Main.Instance.ChangeGameState(new Transition(Main.Instance.GetRandomGameState(true)));
-            else
+            } else
+            {
                 playersWentReady = gameTime.TotalGameTime;
-
+            }
         }
 
         private void ChangePlayerCharacter(int currentPlayerIndex, int newIndex, Player[] players)
@@ -113,7 +116,7 @@ namespace HonccaFest.GameStates
         {
             base.Draw(spriteBatch, players);
 
-            spriteBatch.Draw(Main.TranparentRectangle, new Rectangle(0, 0, Globals.ScreenSize.X, Globals.ScreenSize.Y), Color.White);
+            spriteBatch.Draw(Main.GraphicsHandler.GetSprite("TransparentRectangle"), new Rectangle(0, 0, Globals.ScreenSize.X, Globals.ScreenSize.Y), Color.White);
 
             foreach (Player player in players)
                 player.Draw(spriteBatch);
@@ -138,28 +141,45 @@ namespace HonccaFest.GameStates
                     bool isReady = playersReadyArray[currentPlayerIndex];
 
                     if (isReady)
-                        spriteBatch.Draw(Main.CheckMark, new Rectangle(startX + (startX * currentPlayerIndex) + Globals.TileSize.X / 4, startY + Globals.TileSize.Y + 10, Globals.TileSize.X / 2, Globals.TileSize.Y / 2), Color.White);
+                        spriteBatch.Draw(Main.GraphicsHandler.GetSprite("CheckMark"), new Rectangle(startX + (startX * currentPlayerIndex) + Globals.TileSize.X / 4, startY + Globals.TileSize.Y + 10, Globals.TileSize.X / 2, Globals.TileSize.Y / 2), Color.White);
                     else
                     {
                         if (chosenCharacterRanges[currentPlayerIndex] < characterRanges.Length - 1)
-                            spriteBatch.Draw(Main.CharacterSelectionArrow, new Rectangle(startX + (startX * currentPlayerIndex) + 50, startY + Globals.TileSize.Y / 4, Globals.TileSize.X / 2, Globals.TileSize.Y / 2), Color.White);
+                            spriteBatch.Draw(Main.GraphicsHandler.GetSprite("CharacterSelectionArrow"), new Rectangle(startX + (startX * currentPlayerIndex) + 50, startY + Globals.TileSize.Y / 4, Globals.TileSize.X / 2, Globals.TileSize.Y / 2), Color.White);
                         if (chosenCharacterRanges[currentPlayerIndex] > 0)
-                            spriteBatch.Draw(Main.CharacterSelectionArrow, new Rectangle(startX + (startX * currentPlayerIndex) - (50 / 2 + (50 / 8)), startY + Globals.TileSize.Y / 4, Globals.TileSize.X / 2, Globals.TileSize.Y / 2), new Rectangle(0, 0, Main.CharacterSelectionArrow.Width, Main.CharacterSelectionArrow.Height), Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                            spriteBatch.Draw(Main.GraphicsHandler.GetSprite("CharacterSelectionArrow"), new Rectangle(startX + (startX * currentPlayerIndex) - (50 / 2 + (50 / 8)), startY + Globals.TileSize.Y / 4, Globals.TileSize.X / 2, Globals.TileSize.Y / 2), new Rectangle(0, 0, Main.GraphicsHandler.GetSprite("CharacterSelectionArrow").Width, Main.GraphicsHandler.GetSprite("CharacterSelectionArrow").Height), Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
                     }
                    
-                    spriteBatch.Draw(Main.OutlineRectangle, new Rectangle(startX + (startX * currentPlayerIndex), startY, Globals.TileSize.X, Globals.TileSize.Y), Color.White);
+                    spriteBatch.Draw(Main.GraphicsHandler.GetSprite("OutlineRectangle"), new Rectangle(startX + (startX * currentPlayerIndex), startY, Globals.TileSize.X, Globals.TileSize.Y), Color.White);
                 }
             }
+
+            int playersCurrentlyReady = PlayersReady();
 
             string instructionJoystickString = $"READY UP";
 
             Vector2 instructionFontSize = Main.ScoreFont.MeasureString(instructionJoystickString);
 
-            spriteBatch.DrawString(Main.ScoreFont, instructionJoystickString, new Vector2(Globals.ScreenSize.X / 2 - instructionFontSize.X / 2, startY + 100), Color.DimGray);
+            spriteBatch.DrawString(Main.ScoreFont, instructionJoystickString, new Vector2(Globals.ScreenSize.X / 2 - instructionFontSize.X / 2, startY + 100), playersCurrentlyReady >= Main.Instance.TotalPlayers ? Color.Green : Color.DimGray);
 
             int buttonSize = Globals.TileSize.X;
 
-            spriteBatch.Draw(Main.JoystickButtons, new Rectangle((int)(Globals.ScreenSize.X / 2 - buttonSize / 2), startY + 150, buttonSize, buttonSize), new Rectangle(47, 39, 122, 122), Color.White);
+            spriteBatch.Draw(Main.GraphicsHandler.GetSprite("JoystickButtons"), new Rectangle((int)(Globals.ScreenSize.X / 2 - buttonSize / 2), startY + 150, buttonSize, buttonSize), new Rectangle(47, 39, 122, 122), Color.White);
+        }
+
+        private int PlayersReady()
+        {
+            int playersReady = 0;
+
+            for (int currentPlayerIndex = 0; currentPlayerIndex < playersReadyArray.Length; currentPlayerIndex++)
+            {
+                bool playerIsReady = playersReadyArray[currentPlayerIndex];
+
+                if (playerIsReady)
+                    playersReady++;
+            }
+
+            return playersReady;
         }
     }
 }

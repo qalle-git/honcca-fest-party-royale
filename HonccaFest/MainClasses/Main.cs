@@ -15,27 +15,16 @@ namespace HonccaFest
     {
         public static Main Instance;
 
-        private GraphicsDeviceManager graphicsManager;
         private SpriteBatch spriteBatch;
 
-        public static Texture2D TileSet;
-        public static Texture2D OutlineRectangle;
-        public static Texture2D TranparentRectangle;
-        public static Texture2D CharacterSelectionArrow;
-        public static Texture2D TaggerArrow;
-        public static Texture2D CheckMark;
+        public static GraphicsHandler GraphicsHandler;
 
-        public static Texture2D JoystickButtons;
-
-        public static Texture2D PlayerOneSprite;
-
-        public static Texture2D FireballSprite;
+        public static AudioHandler SoundHandler;
+        public static MusicHandler MusicHandler;
 
         public static SpriteFont MainFont;
         public static SpriteFont ScoreFont;
         public static SpriteFont DebugFont;
-
-        public static AudioHandler SoundHandler;
 
         public int TotalPlayers = 0;
 
@@ -47,7 +36,7 @@ namespace HonccaFest
 
         public Main()
         {
-            graphicsManager = new GraphicsDeviceManager(this)
+            Globals.GDManager = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = Globals.ScreenSize.X,
                 PreferredBackBufferHeight = Globals.ScreenSize.Y,
@@ -67,6 +56,9 @@ namespace HonccaFest
             base.Initialize();
 
             SoundHandler = new AudioHandler();
+            MusicHandler = new MusicHandler();
+
+            ChangeGameState(new SplashScreen(new CharacterSelection()));
         }
 
         protected override void LoadContent()
@@ -75,20 +67,7 @@ namespace HonccaFest
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Tile SpriteSheet
-            TileSet = Content.Load<Texture2D>("Tiles/tileSet");
-
-            // Sprites
-            OutlineRectangle = Content.Load<Texture2D>("Sprites/outlineRectangle");
-            TranparentRectangle = Content.Load<Texture2D>("Sprites/transparentRectangle");
-            TaggerArrow = Content.Load<Texture2D>("Sprites/taggerPointer");
-            CharacterSelectionArrow = Content.Load<Texture2D>("Sprites/characterSelectionArrow");
-            CheckMark = Content.Load<Texture2D>("Sprites/checkmark");
-            JoystickButtons = Content.Load<Texture2D>("Sprites/joystick");
-
-            // SpriteSheets
-            PlayerOneSprite = Content.Load<Texture2D>("SpriteSheets/playerSpritesheet");
-            FireballSprite = Content.Load<Texture2D>("SpriteSheets/fireballSpritesheet");
+            GraphicsHandler = new GraphicsHandler();
 
             // Fonts
             MainFont = Content.Load<SpriteFont>("Fonts/mainFont");
@@ -99,13 +78,14 @@ namespace HonccaFest
             players = new Player[Globals.MaxPlayers];
 
             if (Globals.DebugMode)
-                MonoArcade.ActivateDebug(false, true, true, false);
+                MonoArcade.ActivateDebug(true, true, true, true);
 
+            // Create every player object.
             for (int currentPlayerIndex = 0; currentPlayerIndex < Globals.MaxPlayers; currentPlayerIndex++)
             {
                 bool isInGame = MonoArcade.PlayerIsIngame(currentPlayerIndex);
 
-                Player playerObject = new Player(PlayerOneSprite, Vector2.Zero, (KeySet)currentPlayerIndex)
+                Player playerObject = new Player(GraphicsHandler.GetSprite("PlayerOneSprite"), Vector2.Zero, (KeySet)currentPlayerIndex)
                 {
                     Active = isInGame
                 };
@@ -115,11 +95,6 @@ namespace HonccaFest
 
                 players[currentPlayerIndex] = playerObject;
             }
-
-            if (Globals.DebugMode)
-                ChangeGameState(new MainMenu());
-            else
-                ChangeGameState(new CharacterSelection());
         }
 
         protected override void Update(GameTime gameTime)
@@ -175,32 +150,40 @@ namespace HonccaFest
 		{
             List<GameState> gameModes = new List<GameState>()
             {
+                new DuckOut(),
                 new CannonDodge(),
-                new DuckTag()
+                new MazeOut(),
+                new QuackCash(),
+                new Quackory(),
+                new DuckTag(),
+                new DuckyRoad(),
+                new UltimateDuckRun()
             };
 
             if (wantGamemode)
 			{
-                int randomGameState = Globals.RandomGenerator.Next(0, gameModes.Count);
+                // If there is only one gamemode existing, start that one.
+                if (gameModes.Count <= 1)
+                    return gameModes[0];
 
-                Console.WriteLine($"Checking {gameModes[randomGameState].LevelName} with {lastGameState}");
+                int randomGameState = Globals.RandomGenerator.Next(0, gameModes.Count);
 
                 if (gameModes[randomGameState].LevelName == lastGameState)
                     return GetRandomGameState(true);
 
                 return gameModes[randomGameState];
-			}
+            }
 
             return new MainMenu();
 		}
 
         private TimeSpan lastPressed = TimeSpan.Zero;
-        private TimeSpan afkTimer = TimeSpan.FromMinutes(2);
+        private TimeSpan afkTimer = TimeSpan.FromMinutes(3);
 
         /// <summary>
         /// Checks if the game is afk, no buttons pressed.
         /// </summary>
-        /// <returns>Returns true if nothing is pressed within 1 minute.</returns>
+        /// <returns>Returns true if nothing is pressed within ``afkTimer``.</returns>
         private bool IsAfk(GameTime gameTime)
         {
             int keysPressed = Input.GetPressedKeys().Length;

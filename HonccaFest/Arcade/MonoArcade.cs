@@ -1,6 +1,6 @@
-﻿﻿// MonoArcade.cs
-// Version 1.00
-// 2020-11-12
+﻿// MonoArcade.cs
+// Version 1.01
+// 2020-12-14
 // Author Simon Grönberg
 // LBS Kreativa Gymnasiet
 
@@ -40,6 +40,7 @@ public abstract class ArcadeInputState
             WasPressed = false;
             return true;
         }
+        WasPressed = false;
         return false;
 
     }
@@ -51,6 +52,7 @@ public abstract class ArcadeInputState
             WasReleased = false;
             return true;
         }
+        WasReleased = false;
         return false;
     }
     public bool GetInputState()
@@ -85,7 +87,7 @@ public class AxisState : ArcadeInputState
     protected override void Update()
     {
 
-        if (GetAxisValue() * Sign > 0 && (!IsDown || DateTime.Now > PressedTime + TimeSpan.FromSeconds(0.5)))
+        if (GetAxisValue() * Sign > 0 && (!IsDown))
         {
             IsDown = true;
             PressedTime = DateTime.Now;
@@ -118,7 +120,7 @@ public class KeyButtonState : ArcadeInputState
     protected override void Update()
     {
 
-        if (Keyboard.GetState().IsKeyDown(Key) && (!IsDown || DateTime.Now > PressedTime + TimeSpan.FromSeconds(0.5)))
+        if (Keyboard.GetState().IsKeyDown(Key) && (!IsDown))
         {
             IsDown = true;
             PressedTime = DateTime.Now;
@@ -398,7 +400,6 @@ public static class MonoArcade
         player[1] = new ArcadePlayer(1, Keys.A, Keys.D, Keys.W, Keys.S, Keys.Q, Keys.E, Keys.Z, Keys.X, true);
         player[2] = new ArcadePlayer(2, Keys.F, Keys.H, Keys.T, Keys.G, Keys.R, Keys.Y, Keys.V, Keys.B, true);
         player[3] = new ArcadePlayer(3, Keys.J, Keys.L, Keys.I, Keys.K, Keys.U, Keys.O, Keys.M, Keys.N, true);
-
         if (player0)
         {
             player[0].AddToGame();
@@ -415,7 +416,6 @@ public static class MonoArcade
         {
             player[3].AddToGame();
         }
-
         Debug = true;
     }
     /// <summary>
@@ -432,10 +432,10 @@ public static class MonoArcade
     static MonoArcade()
     {
         AppDomain.CurrentDomain.ProcessExit += Destructor;
-        player[0] = new ArcadePlayer(0, Keys.Left, Keys.Right, Keys.Up, Keys.Down, Keys.Enter, Keys.RightShift, Keys.RightControl, Keys.Back, true);
-        player[1] = new ArcadePlayer(1, Keys.A, Keys.D, Keys.W, Keys.S, Keys.Q, Keys.E, Keys.Z, Keys.X, true);
-        player[2] = new ArcadePlayer(2, Keys.F, Keys.H, Keys.T, Keys.G, Keys.R, Keys.Y, Keys.V, Keys.B, true);
-        player[3] = new ArcadePlayer(3, Keys.J, Keys.L, Keys.I, Keys.K, Keys.U, Keys.O, Keys.M, Keys.N, true);
+        player[0] = new ArcadePlayer(0, Keys.Left, Keys.Right, Keys.Up, Keys.Down, Keys.LeftShift, Keys.Space, Keys.LeftControl, Keys.LeftAlt, true);
+        player[1] = new ArcadePlayer(1, Keys.D, Keys.G, Keys.R, Keys.F, Keys.W, Keys.Q, Keys.A, Keys.S, true);
+        player[2] = new ArcadePlayer(2, Keys.J, Keys.L, Keys.I, Keys.K, Keys.O, Keys.Enter, Keys.RightControl, Keys.RightShift, true);
+        player[3] = new ArcadePlayer(3, Keys.V, Keys.U, Keys.Y, Keys.N, Keys.M, Keys.H, Keys.B, Keys.E, true);
         Load();
     }
     /// <summary>
@@ -470,7 +470,7 @@ public static class MonoArcade
     /// </summary>
     public static void Save()
     {
-        Console.WriteLine("Saving...");
+        System.Console.WriteLine("Saving...");
         StreamWriter sw = new StreamWriter(filePath);
         for (int i = 0; i < 4; i++)
         {
@@ -483,7 +483,7 @@ public static class MonoArcade
     /// </summary>
     /// <param name="playerId">the playerId to check</param>
     /// <returns>true if the playerId is within bounds</returns>
-    static bool CheckPlayerId(int playerId)
+    static bool checkPlayerId(int playerId)
     {
         if (playerId >= 0 && playerId < 4)
         {
@@ -501,13 +501,13 @@ public static class MonoArcade
     /// <summary>
     public static bool GetKeyDown(int playerId, ArcadeButton button)
     {
-        if (CheckPlayerId(playerId))
+        if (checkPlayerId(playerId))
         {
             return player[playerId].GetKeyDown(button);
         }
         else
         {
-            throw new ArgumentException("Arcade.GetKeyDown: PlayerId out of bounds");
+            throw new System.ArgumentException("Arcade.GetKeyDown: PlayerId out of bounds");
         }
 
     }
@@ -520,13 +520,13 @@ public static class MonoArcade
     /// <summary>
     public static bool GetKeyUp(int playerId, ArcadeButton button)
     {
-        if (CheckPlayerId(playerId))
+        if (checkPlayerId(playerId))
         {
             return player[playerId].GetKeyUp(button);
         }
         else
         {
-            throw new ArgumentException("Arcade.GetKeyUp: PlayerId out of bounds");
+            throw new System.ArgumentException("Arcade.GetKeyUp: PlayerId out of bounds");
         }
 
     }
@@ -539,7 +539,7 @@ public static class MonoArcade
     /// <summary>
     public static bool GetKey(int playerId, ArcadeButton button)
     {
-        if (CheckPlayerId(playerId))
+        if (checkPlayerId(playerId))
         {
             return player[playerId].GetKey(button);
         }
@@ -573,7 +573,7 @@ public static class MonoArcade
     /// <returns>the score</returns>
     public static int GetScore(int playerId)
     {
-        if (CheckPlayerId(playerId))
+        if (checkPlayerId(playerId))
         {
             return player[playerId].GetScore();
         }
@@ -590,7 +590,7 @@ public static class MonoArcade
     /// <param name="score">the number which the score should be set to</param>
     public static void SetScore(int playerId, int score)
     {
-        if (CheckPlayerId(playerId))
+        if (checkPlayerId(playerId))
         {
             player[playerId].SetScore(score);
         }
@@ -607,7 +607,7 @@ public static class MonoArcade
     /// <param name="score">the amount of points to add to the score</param>
     public static void AddScore(int playerId, int score)
     {
-        if (CheckPlayerId(playerId))
+        if (checkPlayerId(playerId))
         {
             player[playerId].AddScore(score);
         }
@@ -624,7 +624,7 @@ public static class MonoArcade
     /// <param name="score">the amount of points the score should be decreased with</param>
     public static void SubtractScore(int playerId, int score)
     {
-        if (CheckPlayerId(playerId))
+        if (checkPlayerId(playerId))
         {
             player[playerId].SubtractScore(score);
         }
@@ -634,4 +634,6 @@ public static class MonoArcade
         }
 
     }
+
+
 }

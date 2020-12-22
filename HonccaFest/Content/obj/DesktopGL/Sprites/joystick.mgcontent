@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/carl.aberg2/Desktop/honcca-fest-party-royale-master/HonccaFest/Content/Sprites/joystick.png</SourceFile>
+  <SourceFile>F:/Github/honcca-fest-party-royale/HonccaFest/Content/Sprites/joystick.png</SourceFile>
   <SourceTime>2020-11-21T21:13:18+01:00</SourceTime>
-  <DestFile>C:/Users/carl.aberg2/Desktop/honcca-fest-party-royale-master/HonccaFest/Content/bin/DesktopGL/Sprites/joystick.xnb</DestFile>
-  <DestTime>2020-11-23T12:55:36.4019369+01:00</DestTime>
+  <DestFile>F:/Github/honcca-fest-party-royale/HonccaFest/Content/bin/DesktopGL/Sprites/joystick.xnb</DestFile>
+  <DestTime>2020-12-01T12:15:04.7837633+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework.Audio;
-using System;
+﻿// AudioHandler.cs
+// Author Carl Åberg
+// LBS Kreativa Gymnasiet
+
+using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HonccaFest.Sound
 {
@@ -13,6 +13,18 @@ namespace HonccaFest.Sound
         {
             {
                 "quack_sound",
+                null
+            },
+            {
+                "coin_sound",
+                null
+            },
+            {
+                "cannon_sound",
+                null
+            },
+            {
+                "finish_sound",
                 null
             }
         };

@@ -47,18 +47,27 @@
   <ItemGroup>
     <Compile Include="Arcade\MonoArcade.cs" />
     <Compile Include="Files\Collision.cs" />
+    <Compile Include="Files\EnumExtensions.cs" />
     <Compile Include="Files\FileHandler.cs" />
+    <Compile Include="Files\GraphicsHandler.cs" />
     <Compile Include="Files\Placement.cs" />
+    <Compile Include="Files\Timer.cs" />
     <Compile Include="GameStates\CannonDodge.cs" />
     <Compile Include="GameStates\CharacterSelection.cs" />
     <Compile Include="GameStates\Creator.cs" />
     <Compile Include="GameStates\DuckDance.cs" />
+    <Compile Include="GameStates\DuckOut.cs" />
     <Compile Include="GameStates\DuckTag.cs" />
+    <Compile Include="GameStates\DuckyRoad.cs" />
     <Compile Include="GameStates\EndScreen.cs" />
     <Compile Include="GameStates\MainMenu.cs" />
+    <Compile Include="GameStates\MazeOut.cs" />
+    <Compile Include="GameStates\QuackCash.cs" />
     <Compile Include="GameStates\Quackory.cs" />
+    <Compile Include="GameStates\SplashScreen.cs" />
     <Compile Include="GameStates\TestingArea.cs" />
     <Compile Include="GameStates\Transition.cs" />
+    <Compile Include="GameStates\UltimateDuckRun.cs" />
     <Compile Include="MainClasses\Animation.cs" />
     <Compile Include="MainClasses\GameObject.cs" />
     <Compile Include="MainClasses\GameState.cs" />
@@ -66,11 +75,11 @@
     <Compile Include="MainClasses\Input.cs" />
     <Compile Include="MainClasses\Main.cs" />
     <Compile Include="GameObjects\Player.cs" />
-    <Compile Include="Menu\Menu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sound\AudioEffect.cs" />
     <Compile Include="Sound\AudioHandler.cs" />
+    <Compile Include="Sound\MusicHandler.cs" />
     <Compile Include="Tiles\Tile.cs" />
   </ItemGroup>
   <ItemGroup>

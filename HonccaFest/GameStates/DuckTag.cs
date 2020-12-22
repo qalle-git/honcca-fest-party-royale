@@ -1,5 +1,10 @@
-﻿using HonccaFest.Files;
+﻿// Creator.cs
+// Author Ossian Stange
+// LBS Kreativa Gymnasiet
+
+using HonccaFest.Files;
 using HonccaFest.MainClasses;
+using HonccaFest.Sound;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -10,10 +15,10 @@ using System.Threading.Tasks;
 
 namespace HonccaFest.GameStates
 {
-    struct ConnectPlayerTime
+    public struct ConnectPlayerTime
     {
         public int PlayerIndex;
-        public TimeSpan PlayerTagTime;
+        public TimeSpan PlayerTime;
     }
 
     class DuckTag : GameState
@@ -25,7 +30,7 @@ namespace HonccaFest.GameStates
         private TimeSpan tagCooldown = TimeSpan.FromMilliseconds(2000);
 
         private TimeSpan lastTagged = TimeSpan.Zero;
-        private TimeSpan totalGameDuration = TimeSpan.FromMinutes(0.05);
+        private TimeSpan totalGameDuration = TimeSpan.FromMinutes(1);
         private TimeSpan[] playerTaggerTime;
 
         private float taggerArrowY;
@@ -33,16 +38,26 @@ namespace HonccaFest.GameStates
 
         private readonly Vector2[] spawnPoints = new Vector2[]
         {
-            new Vector2(6, 6),
+            new Vector2(2, 2),
             new Vector2(9, 14),
             new Vector2(17, 15),
-            new Vector2(12, 3)
+            new Vector2(16, 4)
         };
 
         public DuckTag() : base("DuckTag")
         {
             taggerArrowY = Globals.GameSize.Y;
             taggerArrowDirection = 1;
+        }
+
+        public int GenerateRandomTagger(Player[] players)
+        {
+            int randomPlayerIndex = Globals.RandomGenerator.Next(0, players.Length);
+
+            if (!players[randomPlayerIndex].Active)
+                return GenerateRandomTagger(players);
+            else
+                return randomPlayerIndex;
         }
 
         public override void Initialize(ref Player[] players)
@@ -58,9 +73,9 @@ namespace HonccaFest.GameStates
                     playerTaggerTime[currentPlayerIndex] = TimeSpan.FromMinutes(60);
             }
 
-            int randomPlayerIndex = Globals.RandomGenerator.Next(0, players.Length);
+            isTagger = GenerateRandomTagger(players);
 
-            isTagger = randomPlayerIndex;
+            Main.MusicHandler.Play("duck_tag");
         }
 
         private TimeSpan lastGame = TimeSpan.Zero;
@@ -93,12 +108,13 @@ namespace HonccaFest.GameStates
                 {
                     for (int playerIndex = 0; playerIndex < players.Length; playerIndex++)
                     {
-                        if (Vector2.Distance(tagger.CurrentPixelPosition, players[playerIndex].CurrentPixelPosition) < tagDistance && playerIndex != isTagger)
+                        if (Vector2.Distance(tagger.CurrentPixelPosition, players[playerIndex].CurrentPixelPosition) < tagDistance && playerIndex != isTagger && players[playerIndex].Active)
                         {
                             tagger.PixelPerMove = 2;
                             isTagger = playerIndex;
                             players[isTagger].MovementEnabled = false;
                             lastTagged = gameTime.TotalGameTime;
+                            new AudioEffect("quack_sound").Play(0.2f, tagger.CurrentPosition);
 
                             break;
                         }
@@ -106,9 +122,7 @@ namespace HonccaFest.GameStates
                 }
 
                 if (gameTime.TotalGameTime > lastTagged + tagCooldown)
-                {
                     players[isTagger].MovementEnabled = true;
-                }
 
                 for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
                     players[currentPlayerIndex].Update(gameTime, Map);
@@ -119,13 +133,17 @@ namespace HonccaFest.GameStates
                 List<ConnectPlayerTime> temporaryTagTimes = new List<ConnectPlayerTime>();
 
                 for (int currentPlayerIndex = 0; currentPlayerIndex < playerTaggerTime.Length; currentPlayerIndex++)
+                {
                     temporaryTagTimes.Add(new ConnectPlayerTime()
                     {
                         PlayerIndex = currentPlayerIndex,
-                        PlayerTagTime = playerTaggerTime[currentPlayerIndex]
+                        PlayerTime = playerTaggerTime[currentPlayerIndex]
                     });
 
-                temporaryTagTimes = temporaryTagTimes.OrderBy(tag => tag.PlayerTagTime).ToList();
+                    players[currentPlayerIndex].PixelPerMove = 2;
+                }
+
+                temporaryTagTimes = temporaryTagTimes.OrderBy(tag => tag.PlayerTime).ToList();
 
                 for (int currentPlacement = 0; currentPlacement < temporaryTagTimes.Count; currentPlacement++)
                 {
@@ -135,7 +153,7 @@ namespace HonccaFest.GameStates
                     {
                         PlayerIndex = playerTime.PlayerIndex,
                         PlayerPlacement = currentPlacement + 1,
-                        PlayerText = $"{Math.Floor(playerTime.PlayerTagTime.TotalSeconds)}s"
+                        PlayerText = $"{Math.Floor(playerTime.PlayerTime.TotalSeconds)}s"
                     });
                 }
 
@@ -151,7 +169,7 @@ namespace HonccaFest.GameStates
             {
                 if (playerIndex == isTagger)
                 {
-                    spriteBatch.Draw(Main.TaggerArrow, new Vector2(players[isTagger].CurrentPixelPosition.X, players[isTagger].CurrentPixelPosition.Y - taggerArrowY), Color.Red);
+                    spriteBatch.Draw(Main.GraphicsHandler.GetSprite("TaggerArrow"), new Vector2(players[isTagger].CurrentPixelPosition.X, players[isTagger].CurrentPixelPosition.Y - taggerArrowY), Color.Red);
                 }
             }
 

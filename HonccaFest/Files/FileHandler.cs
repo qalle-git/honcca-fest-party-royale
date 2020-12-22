@@ -1,9 +1,10 @@
-﻿using System;
+﻿// FileHandler.cs
+// Author Carl Åberg
+// LBS Kreativa Gymnasiet
+
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HonccaFest.Files
 {

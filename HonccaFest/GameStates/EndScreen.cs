@@ -1,12 +1,13 @@
-﻿using HonccaFest.Files;
+﻿// EndScreen.cs
+// Author Carl Åberg
+// LBS Kreativa Gymnasiet
+
+using HonccaFest.Files;
 using HonccaFest.MainClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HonccaFest.GameStates
 {
@@ -32,6 +33,7 @@ namespace HonccaFest.GameStates
 				Player currentPlayer = players[placement.PlayerIndex];
 
 				currentPlayer.CurrentPixelPosition = new Vector2(startX + (startX * (placement.PlayerPlacement - 1)), startY);
+				currentPlayer.CurrentFrame.Y = 0;
 
 				currentPlayer.Active = MonoArcade.PlayerIsIngame(placement.PlayerIndex);
 
@@ -58,7 +60,7 @@ namespace HonccaFest.GameStates
 		{
 			base.Draw(spriteBatch, players);
 
-			spriteBatch.Draw(Main.TranparentRectangle, new Rectangle(0, 0, Globals.ScreenSize.X, Globals.ScreenSize.Y), Color.White);
+			spriteBatch.Draw(Main.GraphicsHandler.GetSprite("TransparentRectangle"), new Rectangle(0, 0, Globals.ScreenSize.X, Globals.ScreenSize.Y), Color.White);
 
 			foreach (Player player in players)
 				player.Draw(spriteBatch);
@@ -92,7 +94,7 @@ namespace HonccaFest.GameStates
 
 					spriteBatch.DrawString(Main.ScoreFont, currentScoreString, new Vector2(startX + (startX * (placement.PlayerPlacement - 1)) + Globals.TileSize.X / 2 - scoreFontSize.X / 2, startY + 125), Color.White);
 				
-					spriteBatch.Draw(Main.OutlineRectangle, new Rectangle(startX + (startX * (placement.PlayerPlacement - 1)), startY, Globals.TileSize.X, Globals.TileSize.Y), Color.White);
+					spriteBatch.Draw(Main.GraphicsHandler.GetSprite("OutlineRectangle"), new Rectangle(startX + (startX * (placement.PlayerPlacement - 1)), startY, Globals.TileSize.X, Globals.TileSize.Y), Color.White);
 				}
 			}
 		}

@@ -11,6 +11,16 @@ namespace HonccaFest.GameStates
 {
 	class TestingArea : GameState
 	{
+		public enum State
+		{
+			SHOW = 2000,
+			HIDE = 5000,
+			REVEAL = 4000,
+			GIVE = 2500
+		}
+
+		public State CurrentState = State.SHOW;
+
 		public TestingArea() : base("TestingArea")
 		{
 
@@ -28,27 +38,21 @@ namespace HonccaFest.GameStates
 
 				currentPlayer.Update(gameTime, Map);
 			}
+
+			if (gameTime.TotalGameTime > TimeSpan.FromMilliseconds((int)CurrentState))
+			{
+				CurrentState = GetNextState();
+			}
 		}
 
-		int secondsRemaining = 297;
+		private State GetNextState()
+		{
+			return (State)Array.IndexOf(Enum.GetValues(CurrentState.GetType()), CurrentState);
+		}
 
 		public override void Draw(SpriteBatch spriteBatch, Player[] players)
 		{
 			base.Draw(spriteBatch, players);
-
-			for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
-			{
-				Player currentPlayer = players[currentPlayerIndex];
-
-				currentPlayer.Draw(spriteBatch);
-			}
-
-			int minutesLeft = secondsRemaining / 60;
-			int secondsLeft = secondsRemaining % 60;
-
-			secondsRemaining--;
-
-			Console.WriteLine($"{(minutesLeft < 10 ? "0" : "")}{minutesLeft}:{(secondsLeft < 10 ? "0" : "")}{secondsLeft}");
 		}
 	}
 }

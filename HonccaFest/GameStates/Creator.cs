@@ -1,4 +1,8 @@
-﻿using HonccaFest.Files;
+﻿// Creator.cs
+// Author Carl Åberg
+// LBS Kreativa Gymnasiet
+
+using HonccaFest.Files;
 using HonccaFest.MainClasses;
 using HonccaFest.Tiles;
 using Microsoft.Xna.Framework;
@@ -20,7 +24,7 @@ namespace HonccaFest.GameStates
         private Vector2 currentPosition;
         private Vector2 currentPixelPosition;
 
-        private const string mapName = "DuckDance";
+        private const string mapName = "DuckOut";
 
         public Creator() : base(mapName)
         {
@@ -144,6 +148,12 @@ namespace HonccaFest.GameStates
                             updateMovement = true;
 
                             break;
+                        case Keys.K:
+                            FillMap();
+
+                            updateMovement = true;
+
+                            break;
                         default:
                             break;
                     }
@@ -154,8 +164,26 @@ namespace HonccaFest.GameStates
             }
         }
 
+		private void FillMap()
+		{
+            for (int currentX = 0; currentX < Map.GetLength(0); currentX++)
+                for (int currentY = 0; currentY < Map.GetLength(1); currentY++)
+                {
+                    Tile[] tiles = Map[currentX, currentY];
 
-		private void SaveMap()
+                    tiles[0] = new Tile()
+                    {
+                        TileX = (int)currentX,
+                        TileY = (int)currentY,
+                        TileIndex = currentTileIndex,
+                        TileType = Tile.Type.NONE,
+                        TileLayer = 0
+                    };
+                }
+
+        }
+
+        private void SaveMap()
         {
             List<int> saveList = new List<int>();
 
@@ -265,14 +293,14 @@ namespace HonccaFest.GameStates
 		{
             base.Draw(spriteBatch, players);
 
-            int numTilesX = Main.TileSet.Width / Globals.TileSize.X;
+            int numTilesX = Main.GraphicsHandler.GetSprite("TileSheet").Width / Globals.TileSize.X;
 
             Rectangle tileRectangle = new Rectangle(currentTileIndex % numTilesX * Globals.TileSize.X, currentTileIndex / numTilesX * Globals.TileSize.Y, Globals.TileSize.X, Globals.TileSize.Y);
 
             if (currentTileIndex > 0)
-                spriteBatch.Draw(Main.TileSet, new Rectangle((int)currentPixelPosition.X, (int)currentPixelPosition.Y, Globals.TileSize.X, Globals.TileSize.Y), tileRectangle, Color.White);
+                spriteBatch.Draw(Main.GraphicsHandler.GetSprite("TileSheet"), new Rectangle((int)currentPixelPosition.X, (int)currentPixelPosition.Y, Globals.TileSize.X, Globals.TileSize.Y), tileRectangle, Color.White);
 
-            spriteBatch.Draw(Main.OutlineRectangle, new Rectangle((int)currentPixelPosition.X, (int)currentPixelPosition.Y, Globals.TileSize.X, Globals.TileSize.Y), Color.White);
+            spriteBatch.Draw(Main.GraphicsHandler.GetSprite("OutlineRectangle"), new Rectangle((int)currentPixelPosition.X, (int)currentPixelPosition.Y, Globals.TileSize.X, Globals.TileSize.Y), Color.White);
 
             spriteBatch.DrawString(Main.DebugFont, $"X: {currentPosition.X}\nY: {currentPosition.Y}", new Vector2(0, 0), Color.White);
             spriteBatch.DrawString(Main.DebugFont, $"Tile: {currentTileIndex}", new Vector2(0, 40), Color.White);

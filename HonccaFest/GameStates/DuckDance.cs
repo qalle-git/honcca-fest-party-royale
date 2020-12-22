@@ -1,13 +1,14 @@
-﻿using HonccaFest.MainClasses;
+﻿// DuckDance.cs
+// Author Carl Åberg
+// LBS Kreativa Gymnasiet
+
+using HonccaFest.Files;
+using HonccaFest.MainClasses;
 using HonccaFest.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static HonccaFest.GameStates.DuckDance;
 
 namespace HonccaFest.GameStates
 {
@@ -24,15 +25,17 @@ namespace HonccaFest.GameStates
 		private readonly Vector2[] spawnPoints = new Vector2[]
 		{
 			new Vector2(5, 4),
-			new Vector2(5, 13),
-			new Vector2(26, 4),
-			new Vector2(26, 13)
+			new Vector2(5, 12),
+			new Vector2(24, 4),
+			new Vector2(24, 12)
 		};
 
-		public const int StartingArrowCount = 4;
+		public const int StartingArrowCount = 3;
 
 		public List<Direction> CurrentArrowDirections;
 		public int CurrentArrowDirection;
+
+		public bool ShowcasingRoute = true;
 
 		private Arrow currentArrow;
 
@@ -50,51 +53,100 @@ namespace HonccaFest.GameStates
 				currentPlayer.ForceMove(spawnPoints[currentPlayerIndex]);
 			}
 
-			currentArrow = new Arrow(new Vector2(Globals.ScreenSize.X / 2, Globals.ScreenSize.Y / 2));
+			currentArrow = new Arrow(new Vector2(Globals.ScreenSize.X / 2, Globals.ScreenSize.Y / 2)) { Active = false };
 
 			AddDirections();
 
 			currentArrow.ChangeDirection(CurrentArrowDirections[CurrentArrowDirection]);
+
+			TogglePlayerMovement(players, false);
 		}
 
 		public override void Update(GameTime gameTime, Player[] players)
+		{
+			if (StartedGameState == TimeSpan.Zero)
+				StartedGameState = gameTime.TotalGameTime;
+
+			PlayerHandler(gameTime, players);
+
+			ArrowHandler(gameTime, players);
+		}
+
+		private void PlayerHandler(GameTime gameTime, Player[] players)
 		{
 			for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
 			{
 				Player currentPlayer = players[currentPlayerIndex];
 
-				currentPlayer.Update(gameTime, Map);
-			}
-
-			ArrowHandler(gameTime);
+				if (currentPlayer.Active)
+					currentPlayer.Update(gameTime, Map);
+			};
 		}
 
 		private TimeSpan lastTimeDirection = TimeSpan.Zero;
-		private TimeSpan directionChangeTimer = TimeSpan.FromSeconds(1);
+		private TimeSpan directionChangeTimer = TimeSpan.FromSeconds(2);
 
-		private void ArrowHandler(GameTime gameTime)
+		private void ArrowHandler(GameTime gameTime, Player[] players)
 		{
-			currentArrow.Update(gameTime, Map);
-
-			if (gameTime.TotalGameTime > lastTimeDirection + directionChangeTimer)
+			if (gameTime.TotalGameTime > StartedGameState + TimeSpan.FromSeconds(3))
 			{
-				lastTimeDirection = gameTime.TotalGameTime;
+				if (!currentArrow.Active)
+					currentArrow.Active = true;
 
-				if (CurrentArrowDirection < CurrentArrowDirections.Count - 1)
+				currentArrow.Update(gameTime, Map);
+
+				if (gameTime.TotalGameTime > lastTimeDirection + directionChangeTimer)
 				{
-					CurrentArrowDirection++;
+					lastTimeDirection = gameTime.TotalGameTime;
+
+					CheckForDestruction(gameTime, players);
+
+					if (CurrentArrowDirection < CurrentArrowDirections.Count - 1)
+					{
+						CurrentArrowDirection++;
+					}
+					else
+					{
+						if (ShowcasingRoute)
+						{
+							ShowcasingRoute = false;
+
+							TogglePlayerMovement(players, true);
+						} 
+						else
+						{
+							ResetPositions(players);
+
+							AddDirections(2);
+						}
+
+						CurrentArrowDirection = 0;
+					}
 
 					Direction newDirection = CurrentArrowDirections[CurrentArrowDirection];
 
 					currentArrow.ChangeDirection(newDirection);
-
-					Console.WriteLine($"Changing to new directionIndex {CurrentArrowDirection}");
-				} else
-				{
-					CurrentArrowDirection = 0;
-
-					AddDirections(2);
 				}
+			}
+		}
+
+		private void TogglePlayerMovement(Player[] players, bool toggle)
+		{
+			for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
+				players[currentPlayerIndex].MovementEnabled = toggle;
+		}
+
+		private void CheckForDestruction(GameTime gameTime, Player[] players)
+		{
+			if (ShowcasingRoute)
+				return;
+
+			for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
+			{
+				Player currentPlayer = players[currentPlayerIndex];
+
+				if (!IsPlayerSafe(players, currentPlayerIndex))
+					currentPlayer.Active = false;
 			}
 		}
 
@@ -102,24 +154,41 @@ namespace HonccaFest.GameStates
 		{
 			base.Draw(spriteBatch, players);
 
+			DrawPlayers(spriteBatch, players);
+			DrawArrow(spriteBatch);
+		}
+
+		private void DrawPlayers(SpriteBatch spriteBatch, Player[] players)
+		{
 			for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
 			{
 				Player currentPlayer = players[currentPlayerIndex];
 
+				spriteBatch.DrawString(Main.DebugFont, $"Pos{currentPlayer.CurrentPosition} Safe{GetSafePosition(currentPlayerIndex)}", currentPlayer.CurrentPixelPosition, Color.White);
+
 				currentPlayer.Draw(spriteBatch);
 			}
-
-			DrawArrow(spriteBatch);
 		}
 
 		private void DrawArrow(SpriteBatch spriteBatch)
 		{
-			currentArrow.Draw(spriteBatch);
+			if (ShowcasingRoute)
+				currentArrow.Draw(spriteBatch);
 		}
 
-		private void AddDirections(int howMany = StartingArrowCount)
+		private void ResetPositions(Player[] players)
 		{
-			for (int currentArrowDirectionIndex = 0; currentArrowDirectionIndex < howMany; currentArrowDirectionIndex++)
+			for (int currentPlayerIndex = 0; currentPlayerIndex < players.Length; currentPlayerIndex++)
+				players[currentPlayerIndex].ForceMove(spawnPoints[currentPlayerIndex]);
+		}
+
+		/// <summary>
+		/// Add directions to the dance.
+		/// </summary>
+		/// <param name="amount">How many directions you want.</param>
+		private void AddDirections(int amount = StartingArrowCount)
+		{
+			for (int currentArrowDirectionIndex = 0; currentArrowDirectionIndex < amount; currentArrowDirectionIndex++)
 			{
 				Direction randomDirection = GetRandomDirection();
 
@@ -131,21 +200,99 @@ namespace HonccaFest.GameStates
 
 		private Direction GetRandomDirection()
 		{
-			int randomDirectionIndex = Globals.RandomGenerator.Next(0, Enum.GetValues(typeof(Direction)).Length);
+			Direction newDirection;
 
-			switch (randomDirectionIndex)
+			switch (Globals.RandomGenerator.Next(0, Enum.GetValues(typeof(Direction)).Length))
 			{
 				case 0:
-					return Direction.UP;
+					newDirection = Direction.UP;
+
+					break;
 				case 1:
-					return Direction.DOWN;
+					newDirection = Direction.DOWN;
+
+					break;
 				case 2:
-					return Direction.LEFT;
+					newDirection = Direction.LEFT;
+
+					break;
 				case 3:
-					return Direction.RIGHT;
+					newDirection = Direction.RIGHT;
+
+					break;
 				default:
-					return Direction.UP;
+					newDirection = Direction.UP;
+
+					break;
 			}
+
+			Vector2 safePosition = GetSafePosition(0, true);
+			Vector2 arrowCoordinate = DirectionToCoordinate(newDirection);
+
+			Vector2 newCoordinate = safePosition + arrowCoordinate;
+
+			Console.WriteLine($"{safePosition} {arrowCoordinate} {newCoordinate}");
+
+			Console.WriteLine(Collision.TilesHasCollision(Map[(int)newCoordinate.X, (int)newCoordinate.Y]));
+			Console.WriteLine(Map[(int)newCoordinate.X, (int)newCoordinate.Y][0].TileType);
+
+			if (Collision.TilesHasCollision(Map[(int)newCoordinate.X, (int)newCoordinate.Y]))
+				return GetRandomDirection();
+
+			return newDirection;
+		}
+
+		private bool IsPlayerSafe(Player[] players, int playerIndex)
+		{
+			Vector2 safePosition = GetSafePosition(playerIndex);
+
+			return players[playerIndex].CurrentPosition == safePosition;
+		}
+
+		private Vector2 GetSafePosition(int playerIndex, bool overrideCurrent = false)
+		{
+			Vector2 arrowPosition = spawnPoints[playerIndex];
+
+			for (int currentDirectionIndex = 0; currentDirectionIndex < CurrentArrowDirections.Count; currentDirectionIndex++)
+			{
+				if (overrideCurrent || currentDirectionIndex <= CurrentArrowDirection)
+				{
+					Vector2 addVector = DirectionToCoordinate(CurrentArrowDirections[currentDirectionIndex]);
+
+					arrowPosition += addVector;
+				}
+			}
+
+			return arrowPosition;
+		}
+
+		public Vector2 DirectionToCoordinate(Direction direction)
+		{
+			Vector2 returnVector = Vector2.Zero;
+
+			switch (direction)
+			{
+				case Direction.UP:
+					returnVector.Y--;
+
+					break;
+				case Direction.DOWN:
+					returnVector.Y++;
+
+					break;
+				case Direction.LEFT:
+					returnVector.X--;
+
+					break;
+				case Direction.RIGHT:
+					returnVector.X++;
+
+					break;
+				default:
+					break;
+			}
+
+			return returnVector;
 		}
 
 		#region ArrowClass
@@ -154,7 +301,7 @@ namespace HonccaFest.GameStates
 		{
 			private Point arrowSize = new Point(96, 96);
 
-			public Arrow(Vector2 position) : base(Main.CharacterSelectionArrow, position)
+			public Arrow(Vector2 position) : base(Main.GraphicsHandler.GetSprite("CharacterSelectionArrow"), position)
 			{
 				CurrentPixelPosition = position;
 			}
